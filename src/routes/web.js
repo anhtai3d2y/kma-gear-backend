@@ -6,6 +6,7 @@ let router = express.Router()
 let initWebRoutes = (app) => {
 
     router.get('/', homeController.getHomePage)
+    router.get('/crud', homeController.getCRUD)
 
     router.get('/tai', (req, res, next) => {
         return res.send('Hello tai')
