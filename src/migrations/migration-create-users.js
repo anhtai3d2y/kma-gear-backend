@@ -7,8 +7,7 @@ module.exports = {
       // fullName: DataTypes.STRING,
       // phoneNumber: DataTypes.STRING,
       // address: DataTypes.STRING,
-      // typeRole: DataTypes.STRING,
-      // keyRole: DataTypes.STRING
+      // roleId: DataTypes.STRING
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -30,10 +29,7 @@ module.exports = {
       address: {
         type: Sequelize.STRING
       },
-      typeRole: {
-        type: Sequelize.STRING
-      },
-      keyRole: {
+      roleId: {
         type: Sequelize.STRING
       },
       createdAt: {
