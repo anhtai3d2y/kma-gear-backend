@@ -25,8 +25,8 @@ let handleUserLogin = (email, password) => {
                 //user already exist
                 //compare password
                 let user = await db.Users.findOne({
-                    where: { email: email },
-                    attributes: ['email', 'roleId', 'password'],
+                    where: { email: email, roleId: 0 },
+                    attributes: ['email', 'roleId', 'password', 'fullName'],
                     raw: true,
                 })
                 if (user) {
@@ -62,7 +62,7 @@ let checkUserEmail = (userEmail) => {
     return new Promise(async (resolve, reject) => {
         try {
             let user = await db.Users.findOne({
-                where: { email: userEmail },
+                where: { email: userEmail, roleId: 0 },
                 raw: true,
             })
             if (user) {
@@ -86,6 +86,7 @@ let getAllUsers = (userId) => {
                     attributes: {
                         exclude: ['password']
                     },
+                    where: { roleId: 1 },
                     raw: true
                 })
             }
