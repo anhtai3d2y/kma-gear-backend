@@ -8,7 +8,7 @@ module.exports = {
       fullName: 'Pham Duy Tai',
       phoneNumber: '0932062686',
       address: 'Hưng Yên',
-      roleId: 'ROLE',
+      roleId: 1,
       createdAt: new Date(),
       updatedAt: new Date()
     }]);
