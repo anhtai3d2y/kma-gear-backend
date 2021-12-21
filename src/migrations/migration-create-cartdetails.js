@@ -1,8 +1,8 @@
 'use strict';
 module.exports = {
     up: async (queryInterface, Sequelize) => {
-        await queryInterface.createTable('invoicedetail', {
-            // billId: DataTypes.INTEGER,
+        await queryInterface.createTable('cartdetails', {
+            // cartId: DataTypes.INTEGER,
             // productId: DataTypes.INTEGER,
             // price: DataTypes.FLOAT,
             // amount: DataTypes.INTEGER,
@@ -13,7 +13,7 @@ module.exports = {
                 primaryKey: true,
                 type: Sequelize.INTEGER
             },
-            billId: {
+            cartId: {
                 type: Sequelize.INTEGER
             },
             productId: {
@@ -39,6 +39,6 @@ module.exports = {
         });
     },
     down: async (queryInterface, Sequelize) => {
-        await queryInterface.dropTable('invoicedetail');
+        await queryInterface.dropTable('cartdetails');
     }
 };

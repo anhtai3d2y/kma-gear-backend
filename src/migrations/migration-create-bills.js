@@ -2,22 +2,44 @@
 module.exports = {
     up: async (queryInterface, Sequelize) => {
         await queryInterface.createTable('bills', {
-            // customerId: DataTypes.INTEGER,
+            // userId: DataTypes.INTEGER,
+            // fullName: DataTypes.STRING,
+            // email: DataTypes.STRING,
+            // phoneNumber: DataTypes.STRING,
+            // address: DataTypes.STRING,
             // note: DataTypes.TEXT,
-            // statusId: DataTypes.INTEGER
+            // statusId: DataTypes.INTEGER,
+            // paymentTypeId: DataTypes.INTEGER,
+
             id: {
                 allowNull: false,
                 autoIncrement: true,
                 primaryKey: true,
                 type: Sequelize.INTEGER
             },
-            customerId: {
+            userId: {
+                allowNull: true,
                 type: Sequelize.INTEGER
+            },
+            fullName: {
+                type: Sequelize.STRING
+            },
+            email: {
+                type: Sequelize.STRING
+            },
+            phoneNumber: {
+                type: Sequelize.STRING
+            },
+            address: {
+                type: Sequelize.STRING
             },
             note: {
                 type: Sequelize.TEXT
             },
-            statusId: {
+            stateId: {
+                type: Sequelize.INTEGER
+            },
+            paymentTypeId: {
                 type: Sequelize.INTEGER
             },
             createdAt: {

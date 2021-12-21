@@ -62,7 +62,7 @@ let checkUserEmail = (userEmail) => {
     return new Promise(async (resolve, reject) => {
         try {
             let user = await db.Users.findOne({
-                where: { email: userEmail, roleId: 0 },
+                where: { email: userEmail },
                 raw: true,
             })
             if (user) {
@@ -128,9 +128,8 @@ let createNewUser = (data) => {
                     fullName: data.fullName,
                     phoneNumber: data.phoneNumber,
                     address: data.address,
-                    roleId: data.roleId
+                    roleId: 1
                 })
-                let allUsers = await db.Users.findAll()
                 resolve({
                     errCode: 0,
                     errMessage: 'Ok'
@@ -159,7 +158,6 @@ let updateUserData = (data) => {
                 user.fullName = data.fullName
                 user.address = data.address
                 user.phoneNumber = data.phoneNumber
-                user.roleId = data.roleId
                 await user.save()
 
                 resolve({
