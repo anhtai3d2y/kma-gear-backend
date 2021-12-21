@@ -16,6 +16,7 @@ module.exports = (sequelize, DataTypes) => {
     Banners.init({
         link: DataTypes.STRING,
         image: DataTypes.STRING,
+        type: DataTypes.INTEGER,
     }, {
         sequelize,
         modelName: 'Banners',

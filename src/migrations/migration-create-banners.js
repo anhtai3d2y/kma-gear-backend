@@ -4,6 +4,8 @@ module.exports = {
         await queryInterface.createTable('banners', {
             // link: DataTypes.STRING,
             // image: DataTypes.STRING,
+            // type: DataTypes.INTEGER,
+
             id: {
                 allowNull: false,
                 autoIncrement: true,
@@ -15,6 +17,9 @@ module.exports = {
             },
             image: {
                 type: Sequelize.STRING
+            },
+            type: {
+                type: Sequelize.INTEGER
             },
             createdAt: {
                 allowNull: false,

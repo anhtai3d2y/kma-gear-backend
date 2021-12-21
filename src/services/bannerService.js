@@ -28,6 +28,7 @@ let createNewBanner = (data) => {
             await db.Banners.create({
                 link: data.link,
                 image: data.image,
+                type: data.type,
             })
             resolve({
                 errCode: 0,
@@ -55,6 +56,7 @@ let updateBannerData = (data) => {
             if (banner) {
                 banner.link = data.link
                 banner.image = data.image
+                banner.type = data.type
                 await banner.save()
                 resolve({
                     errCode: 0,
