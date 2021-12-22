@@ -84,6 +84,7 @@ let initWebRoutes = (app) => {
 
     //product routes
     router.get('/api/get-all-products', productController.handleGetAllProducts)
+    router.get('/api/get-top-products-home', productController.handleGetTopProductsHome)
     router.post('/api/create-new-product', productController.handleCreateNewProduct)
     router.put('/api/edit-product', productController.handleEditProduct)
     router.delete('/api/delete-product', productController.handleDeleteProduct)

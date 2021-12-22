@@ -19,6 +19,21 @@ let handleGetAllProducts = async (req, res) => {
     })
 }
 
+let handleGetTopProductsHome = async (req, res) => {
+    let limit = Number(req.query.limit)
+    if (!limit) limit = 10
+    // try {
+    let products = await productService.getTopProductsHome(limit)
+    return res.status(200).json(products)
+    // } catch (error) {
+    //     console.log(error);
+    //     return res.status(200).json({
+    //         errCode: -1,
+    //         errMessage: 'Error from server...',
+    //     })
+    // }
+}
+
 let handleCreateNewProduct = async (req, res) => {
     let message = await productService.createNewProduct(req.body)
     return res.status(200).json(message)
@@ -46,4 +61,5 @@ module.exports = {
     handleCreateNewProduct: handleCreateNewProduct,
     handleEditProduct: handleEditProduct,
     handleDeleteProduct: handleDeleteProduct,
+    handleGetTopProductsHome: handleGetTopProductsHome,
 }

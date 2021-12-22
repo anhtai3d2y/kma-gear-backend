@@ -22,6 +22,25 @@ let getAllProducts = (productId) => {
     })
 }
 
+let getTopProductsHome = (limit) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            let products = await db.Products.findAll({
+                limit: limit,
+                order: [['createdAt', 'DESC']],
+                raw: true
+            })
+            resolve({
+                errCode: 0,
+                errMessage: 'Ok',
+                products: products
+            })
+        } catch (error) {
+            reject(error)
+        }
+    })
+}
+
 let createNewProduct = (data) => {
     return new Promise(async (resolve, reject) => {
         try {
@@ -47,7 +66,7 @@ let createNewProduct = (data) => {
 let updateProductData = (data) => {
     return new Promise(async (resolve, reject) => {
         try {
-            if (!data.id) {
+            if (!data.id || !data.typeId || !data.brandId) {
                 resolve({
                     errCode: 2,
                     Message: 'Missing required parameters'
@@ -114,4 +133,5 @@ module.exports = {
     createNewProduct: createNewProduct,
     updateProductData: updateProductData,
     deleteProduct: deleteProduct,
+    getTopProductsHome: getTopProductsHome,
 }
