@@ -7,7 +7,7 @@ import stateController from "../controllers/stateController";
 import cartController from "../controllers/cartController";
 import categoryController from "../controllers/categoryController";
 import brandController from "../controllers/brandController";
-import typeproductController from "../controllers/typeproductController";
+import producttypeController from "../controllers/producttypeController";
 import descriptionController from "../controllers/descriptionController";
 import productController from "../controllers/productController";
 import invoicedetailController from "../controllers/invoicedetailController";
@@ -70,11 +70,11 @@ let initWebRoutes = (app) => {
     router.put('/api/edit-brand', brandController.handleEditBrand)
     router.delete('/api/delete-brand', brandController.handleDeleteBrand)
 
-    //typeproduct routes
-    router.get('/api/get-all-typeproducts', typeproductController.handleGetAllTypeproducts)
-    router.post('/api/create-new-typeproduct', typeproductController.handleCreateNewTypeproduct)
-    router.put('/api/edit-typeproduct', typeproductController.handleEditTypeproduct)
-    router.delete('/api/delete-typeproduct', typeproductController.handleDeleteTypeproduct)
+    //producttype routes
+    router.get('/api/get-all-producttypes', producttypeController.handleGetAllProducttypes)
+    router.post('/api/create-new-producttype', producttypeController.handleCreateNewProducttype)
+    router.put('/api/edit-producttype', producttypeController.handleEditProducttype)
+    router.delete('/api/delete-producttype', producttypeController.handleDeleteProducttype)
 
     //description routes
     router.get('/api/get-all-descriptions', descriptionController.handleGetAllDescriptions)

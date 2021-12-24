@@ -4,6 +4,7 @@ let getAllProducts = (productId) => {
     return new Promise(async (resolve, reject) => {
         try {
             let products = ''
+
             if (productId === 'ALL') {
                 products = await db.Products.findAll({
                     raw: true

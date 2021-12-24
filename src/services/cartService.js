@@ -6,7 +6,11 @@ let getAllCarts = (cartId) => {
             let carts = ''
             if (cartId === 'ALL') {
                 carts = await db.Carts.findAll({
-                    raw: true
+                    include: [
+                        { model: db.Users },
+                    ],
+                    raw: true,
+                    nest: true
                 })
             }
             if (cartId && cartId !== 'ALL') {

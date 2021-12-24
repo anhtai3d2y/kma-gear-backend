@@ -1,31 +1,31 @@
 import db from "../models/index";
 
-let getAllTypeproducts = (typeproductId) => {
+let getAllProducttypes = (producttypeId) => {
     return new Promise(async (resolve, reject) => {
         try {
-            let typeproducts = ''
-            if (typeproductId === 'ALL') {
-                typeproducts = await db.Typeproducts.findAll({
+            let producttypes = ''
+            if (producttypeId === 'ALL') {
+                producttypes = await db.Producttypes.findAll({
                     raw: true
                 })
             }
-            if (typeproductId && typeproductId !== 'ALL') {
-                typeproducts = await db.Typeproducts.findOne({
-                    where: { id: typeproductId },
+            if (producttypeId && producttypeId !== 'ALL') {
+                producttypes = await db.Producttypes.findOne({
+                    where: { id: producttypeId },
                     raw: true
                 })
             }
-            resolve(typeproducts)
+            resolve(producttypes)
         } catch (error) {
             reject(error)
         }
     })
 }
 
-let createNewTypeproduct = (data) => {
+let createNewProducttype = (data) => {
     return new Promise(async (resolve, reject) => {
         try {
-            await db.Typeproducts.create({
+            await db.Producttypes.create({
                 typeName: data.typeName,
                 categoryId: data.categoryId,
             })
@@ -39,7 +39,7 @@ let createNewTypeproduct = (data) => {
     })
 }
 
-let updateTypeproductData = (data) => {
+let updateProducttypeData = (data) => {
     return new Promise(async (resolve, reject) => {
         try {
             if (!data.id) {
@@ -48,22 +48,22 @@ let updateTypeproductData = (data) => {
                     Message: 'Missing required parameters'
                 })
             }
-            let typeproduct = await db.Typeproducts.findOne({
+            let producttype = await db.Producttypes.findOne({
                 where: { id: data.id },
                 raw: false
             })
-            if (typeproduct) {
-                typeproduct.typeName = data.typeName
-                typeproduct.categoryId = data.categoryId
-                await typeproduct.save()
+            if (producttype) {
+                producttype.typeName = data.typeName
+                producttype.categoryId = data.categoryId
+                await producttype.save()
                 resolve({
                     errCode: 0,
-                    Message: 'Update typeproduct successfully'
+                    Message: 'Update producttype successfully'
                 })
             } else {
                 resolve({
                     errCode: 1,
-                    errMessage: 'Update typeproduct failure'
+                    errMessage: 'Update producttype failure'
                 })
             }
         } catch (error) {
@@ -72,25 +72,25 @@ let updateTypeproductData = (data) => {
     })
 }
 
-let deleteTypeproduct = (typeproductId) => {
+let deleteProducttype = (producttypeId) => {
     return new Promise(async (resolve, reject) => {
         try {
-            let typeproduct = await db.Typeproducts.findOne({
-                where: { id: typeproductId }
+            let producttype = await db.Producttypes.findOne({
+                where: { id: producttypeId }
             })
-            if (!typeproduct) {
+            if (!producttype) {
                 resolve({
                     errCode: 2,
-                    errMessage: `The typeproduct isn't exist!`
+                    errMessage: `The producttype isn't exist!`
                 })
             }
-            await db.Typeproducts.destroy({
-                where: { id: typeproductId }
+            await db.Producttypes.destroy({
+                where: { id: producttypeId }
             })
 
             resolve({
                 errCode: 0,
-                errMessage: 'Typeproduct has been delete!'
+                errMessage: 'Producttype has been delete!'
             })
 
         } catch (error) {
@@ -100,8 +100,8 @@ let deleteTypeproduct = (typeproductId) => {
 }
 
 module.exports = {
-    getAllTypeproducts: getAllTypeproducts,
-    createNewTypeproduct: createNewTypeproduct,
-    updateTypeproductData: updateTypeproductData,
-    deleteTypeproduct: deleteTypeproduct,
+    getAllProducttypes: getAllProducttypes,
+    createNewProducttype: createNewProducttype,
+    updateProducttypeData: updateProducttypeData,
+    deleteProducttype: deleteProducttype,
 }

@@ -1,10 +1,10 @@
 'use strict';
 module.exports = {
     up: async (queryInterface, Sequelize) => {
-        await queryInterface.addConstraint('Typeproducts', {
+        await queryInterface.addConstraint('Producttypes', {
             fields: ['categoryId'],
             type: 'foreign key',
-            name: 'typeproducts-category-association',
+            name: 'producttype-category-association',
             references: {
                 table: 'Categorys',
                 field: 'id'
@@ -12,10 +12,10 @@ module.exports = {
         });
     },
     down: async (queryInterface, Sequelize) => {
-        await queryInterface.removeConstraint('Typeproducts', {
+        await queryInterface.removeConstraint('Producttypes', {
             fields: ['categoryId'],
             type: 'foreign key',
-            name: 'typeproducts-category-association',
+            name: 'producttype-category-association',
             references: {
                 table: 'Categorys',
                 field: 'id'

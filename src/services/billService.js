@@ -6,7 +6,13 @@ let getAllBills = (billId) => {
             let bills = ''
             if (billId === 'ALL') {
                 bills = await db.Bills.findAll({
-                    raw: true
+                    include: [
+                        { model: db.States },
+                        // { models: db.PaymentTypes },
+                        { model: db.Invoicedetails }
+                    ],
+                    raw: true,
+                    nest: true
                 })
             }
             if (billId && billId !== 'ALL') {

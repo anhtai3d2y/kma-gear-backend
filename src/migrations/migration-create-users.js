@@ -8,6 +8,7 @@ module.exports = {
       // phoneNumber: DataTypes.STRING,
       // address: DataTypes.STRING,
       // roleId: DataTypes.STRING
+
       id: {
         allowNull: false,
         autoIncrement: true,

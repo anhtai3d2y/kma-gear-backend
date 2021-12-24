@@ -96,7 +96,12 @@ let getAllUsers = (userId) => {
                     attributes: {
                         exclude: ['password']
                     },
-                    raw: true
+                    include: [
+                        { model: db.Carts },
+                        { model: db.Bills },
+                    ],
+                    raw: true,
+                    nest: true
                 })
             }
             resolve(users)
