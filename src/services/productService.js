@@ -53,6 +53,8 @@ let createNewProduct = (data) => {
                 price: data.price,
                 discount: data.discount,
                 image: data.image,
+                descriptionHTML: data.descriptionHTML,
+                descriptionMarkdown: data.descriptionMarkdown,
             })
             resolve({
                 errCode: 0,
@@ -84,8 +86,10 @@ let updateProductData = (data) => {
                 product.amount = data.amount
                 product.price = data.price
                 product.discount = data.discount
-                product.image = data.image
-                await product.save()
+                product.image = data.image,
+                    product.descriptionHTML = data.descriptionHTML,
+                    product.descriptionMarkdown = data.descriptionMarkdown,
+                    await product.save()
                 resolve({
                     errCode: 0,
                     Message: 'Update product successfully'

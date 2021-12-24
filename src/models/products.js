@@ -25,6 +25,8 @@ module.exports = (sequelize, DataTypes) => {
         price: DataTypes.FLOAT,
         discount: DataTypes.INTEGER,
         image: DataTypes.STRING,
+        descriptionHTML: DataTypes.TEXT('long'),
+        descriptionMarkdown: DataTypes.TEXT('long')
     }, {
         sequelize,
         modelName: 'Products',

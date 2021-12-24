@@ -9,6 +9,8 @@ module.exports = {
             // price: DataTypes.FLOAT,
             // discount: DataTypes.INTEGER,
             // image: DataTypes.STRING,
+            // descriptionHTML: DataTypes.TEXT('long'),
+            // descriptionMarkdown: DataTypes.TEXT('long')
             id: {
                 allowNull: false,
                 autoIncrement: true,
@@ -35,6 +37,12 @@ module.exports = {
             },
             image: {
                 type: Sequelize.STRING
+            },
+            descriptionHTML: {
+                type: Sequelize.TEXT('long')
+            },
+            descriptionMarkdown: {
+                type: Sequelize.TEXT('long')
             },
             createdAt: {
                 allowNull: false,
