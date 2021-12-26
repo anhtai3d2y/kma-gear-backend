@@ -6,7 +6,11 @@ let getAllProducttypes = (producttypeId) => {
             let producttypes = ''
             if (producttypeId === 'ALL') {
                 producttypes = await db.Producttypes.findAll({
-                    raw: true
+                    include: [
+                        { model: db.Categorys },
+                    ],
+                    raw: true,
+                    nest: true
                 })
             }
             if (producttypeId && producttypeId !== 'ALL') {

@@ -7,13 +7,21 @@ let getAllProducts = (productId) => {
 
             if (productId === 'ALL') {
                 products = await db.Products.findAll({
-                    raw: true
+                    include: [
+                        { model: db.Brands },
+                    ],
+                    raw: true,
+                    nest: true
                 })
             }
             if (productId && productId !== 'ALL') {
                 products = await db.Products.findOne({
                     where: { id: productId },
-                    raw: true
+                    include: [
+                        { model: db.Brands },
+                    ],
+                    raw: true,
+                    nest: true
                 })
             }
             resolve(products)

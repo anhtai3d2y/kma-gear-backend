@@ -8,8 +8,7 @@ let getAllBills = (billId) => {
                 bills = await db.Bills.findAll({
                     include: [
                         { model: db.States },
-                        // { models: db.PaymentTypes },
-                        { model: db.Invoicedetails }
+                        { model: db.Users },
                     ],
                     raw: true,
                     nest: true

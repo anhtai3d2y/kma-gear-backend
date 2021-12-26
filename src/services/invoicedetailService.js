@@ -6,7 +6,11 @@ let getAllInvoicedetails = (invoicedetailId) => {
             let invoicedetails = ''
             if (invoicedetailId === 'ALL') {
                 invoicedetails = await db.Invoicedetails.findAll({
-                    raw: true
+                    include: [
+                        { model: db.Products },
+                    ],
+                    raw: true,
+                    nest: true
                 })
             }
             if (invoicedetailId && invoicedetailId !== 'ALL') {
