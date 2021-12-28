@@ -21,6 +21,32 @@ let getAllBanners = (bannerId) => {
         }
     })
 }
+let getAllMainBanners = () => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            let banners = await db.Banners.findAll({
+                where: { type: 0 },
+                raw: true
+            })
+            resolve(banners)
+        } catch (error) {
+            reject(error)
+        }
+    })
+}
+let getAllSubBanners = (bannerId) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            let banners = await db.Banners.findAll({
+                where: { type: 1 },
+                raw: true
+            })
+            resolve(banners)
+        } catch (error) {
+            reject(error)
+        }
+    })
+}
 
 let createNewBanner = (data) => {
     return new Promise(async (resolve, reject) => {
@@ -103,6 +129,8 @@ let deleteBanner = (bannerId) => {
 
 module.exports = {
     getAllBanners: getAllBanners,
+    getAllMainBanners: getAllMainBanners,
+    getAllSubBanners: getAllSubBanners,
     createNewBanner: createNewBanner,
     updateBannerData: updateBannerData,
     deleteBanner: deleteBanner,

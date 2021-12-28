@@ -18,6 +18,22 @@ let handleGetAllBanners = async (req, res) => {
         banners
     })
 }
+let handleGetAllMainBanners = async (req, res) => {
+    let banners = await bannerService.getAllMainBanners()
+    return res.status(200).json({
+        errCode: 0,
+        errMessage: 'Ok',
+        banners
+    })
+}
+let handleGetAllSubBanners = async (req, res) => {
+    let banners = await bannerService.getAllSubBanners()
+    return res.status(200).json({
+        errCode: 0,
+        errMessage: 'Ok',
+        banners
+    })
+}
 
 let handleCreateNewBanner = async (req, res) => {
     let message = await bannerService.createNewBanner(req.body)
@@ -43,6 +59,8 @@ let handleDeleteBanner = async (req, res) => {
 
 module.exports = {
     handleGetAllBanners: handleGetAllBanners,
+    handleGetAllMainBanners: handleGetAllMainBanners,
+    handleGetAllSubBanners: handleGetAllSubBanners,
     handleCreateNewBanner: handleCreateNewBanner,
     handleEditBanner: handleEditBanner,
     handleDeleteBanner: handleDeleteBanner,
