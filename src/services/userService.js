@@ -26,7 +26,7 @@ let handleUserLogin = (email, password) => {
                 //compare password
                 let user = await db.Users.findOne({
                     where: { email: email, roleId: 0 },
-                    attributes: ['email', 'roleId', 'password', 'fullName'],
+                    attributes: ['email', 'password', 'fullName'],
                     raw: true,
                 })
                 if (user) {
@@ -38,16 +38,59 @@ let handleUserLogin = (email, password) => {
                         userData.user = user
                     } else {
                         userData.errCode = 3
-                        userData.errMessage = `Wrong password`
+                        userData.errMessage = `Sai mật khẩu !`
                     }
                 } else {
                     userData.errCode = 2
-                    userData.errMessage = `User isn't exist`
+                    userData.errMessage = `Tài khoản không tồn tại`
                 }
             } else {
                 //return error
                 userData.errCode = 1
-                userData.errMessage = `Your email isn't exist. Pls try other email`
+                userData.errMessage = `Tài khoản của bạn không tồn tại !`
+            }
+            resolve(userData)
+
+        } catch (error) {
+            reject(error)
+        }
+    })
+}
+
+let handleCustomerLogin = (email, password) => {
+
+    return new Promise(async (resolve, reject) => {
+        try {
+            let userData = {}
+
+            let isExist = await checkUserEmail(email)
+            if (isExist) {
+                //user already exist
+                //compare password
+                let user = await db.Users.findOne({
+                    where: { email: email, roleId: 1 },
+                    attributes: ['id', 'email', 'password', 'fullName', 'phoneNumber', 'address'],
+                    raw: true,
+                })
+                if (user) {
+                    let check = await bcrypt.compareSync(password, user.password);
+                    if (check) {
+                        userData.errCode = 0
+                        userData.errMessage = `Ok`
+                        delete user.password
+                        userData.user = user
+                    } else {
+                        userData.errCode = 3
+                        userData.errMessage = `Sai mật khẩu !`
+                    }
+                } else {
+                    userData.errCode = 2
+                    userData.errMessage = `Tài khoản không tồn tại`
+                }
+            } else {
+                //return error
+                userData.errCode = 1
+                userData.errMessage = `Tài khoản của bạn không tồn tại !`
             }
             resolve(userData)
 
@@ -210,6 +253,7 @@ let deleteUser = (userId) => {
 
 module.exports = {
     handleUserLogin: handleUserLogin,
+    handleCustomerLogin: handleCustomerLogin,
     checkUserEmail: checkUserEmail,
     getAllUsers: getAllUsers,
     createNewUser: createNewUser,

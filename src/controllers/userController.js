@@ -8,11 +8,36 @@ let handleLogin = async (req, res) => {
     if (!email || !password) {
         return res.status(500).json({
             errCode: 1,
-            message: 'Missing input parameter!'
+            message: 'Bạn chưa nhập đầy đủ thông tin !'
         })
     }
 
     let userData = await userService.handleUserLogin(email, password)
+    //check email exist
+    //check password
+    //return userInfo
+    //access_token: JWT
+
+    return res.status(200).json({
+        errCode: userData.errCode,
+        message: userData.errMessage,
+        user: userData.user ? userData.user : {}
+    })
+}
+
+let handleCustomerLogin = async (req, res) => {
+    let email = req.body.email
+    let password = req.body.password
+
+
+    if (!email || !password) {
+        return res.status(500).json({
+            errCode: 1,
+            message: 'Bạn chưa nhập đầy đủ thông tin !'
+        })
+    }
+
+    let userData = await userService.handleCustomerLogin(email, password)
     //check email exist
     //check password
     //return userInfo
@@ -67,6 +92,7 @@ let handleDeleteUser = async (req, res) => {
 
 module.exports = {
     handleLogin: handleLogin,
+    handleCustomerLogin: handleCustomerLogin,
     handleGetAllUsers: handleGetAllUsers,
     handleCreateNewUser: handleCreateNewUser,
     handleEditUser: handleEditUser,
