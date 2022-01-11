@@ -12,6 +12,7 @@ import descriptionController from "../controllers/descriptionController";
 import productController from "../controllers/productController";
 import invoicedetailController from "../controllers/invoicedetailController";
 import cartdetailController from "../controllers/cartdetailController";
+import paypalController from "../controllers/paypalController";
 let router = express.Router()
 
 let initWebRoutes = (app) => {
@@ -104,6 +105,8 @@ let initWebRoutes = (app) => {
     router.put('/api/edit-cartdetail', cartdetailController.handleEditCartdetail)
     router.delete('/api/delete-cartdetail', cartdetailController.handleDeleteCartdetail)
 
+    //paypal
+    router.post('/api/paypal', paypalController.payWithPaypal)
 
     return app.use("/", router)
 }

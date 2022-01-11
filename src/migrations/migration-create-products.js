@@ -10,7 +10,9 @@ module.exports = {
             // discount: DataTypes.INTEGER,
             // image: DataTypes.STRING,
             // descriptionHTML: DataTypes.TEXT('long'),
-            // descriptionMarkdown: DataTypes.TEXT('long')
+            // descriptionMarkdown: DataTypes.TEXT('long'),
+            // deleted: DataTypes.INTEGER
+
             id: {
                 allowNull: false,
                 autoIncrement: true,
@@ -43,6 +45,9 @@ module.exports = {
             },
             descriptionMarkdown: {
                 type: Sequelize.TEXT('long')
+            },
+            deleted: {
+                type: Sequelize.INTEGER
             },
             createdAt: {
                 allowNull: false,

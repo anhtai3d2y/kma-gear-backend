@@ -26,7 +26,8 @@ module.exports = (sequelize, DataTypes) => {
         discount: DataTypes.INTEGER,
         image: DataTypes.STRING,
         descriptionHTML: DataTypes.TEXT('long'),
-        descriptionMarkdown: DataTypes.TEXT('long')
+        descriptionMarkdown: DataTypes.TEXT('long'),
+        deleted: DataTypes.INTEGER
     }, {
         sequelize,
         modelName: 'Products',

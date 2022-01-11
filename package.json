@@ -32,6 +32,7 @@
     "ejs": "^3.1.5",
     "express": "^4.17.1",
     "mysql2": "^2.2.5",
+    "paypal-rest-sdk": "^1.8.1",
     "sequelize": "^6.6.2"
   },
   "devDependencies": {

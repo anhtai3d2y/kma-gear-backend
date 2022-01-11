@@ -7,6 +7,7 @@ let getAllProducts = (productId) => {
 
             if (productId === 'ALL') {
                 products = await db.Products.findAll({
+                    where: { deleted: 0 },
                     include: [
                         { model: db.Brands },
                     ],
@@ -16,7 +17,40 @@ let getAllProducts = (productId) => {
             }
             if (productId && productId !== 'ALL') {
                 products = await db.Products.findOne({
-                    where: { id: productId },
+                    where: { id: productId, deleted: 0 },
+                    include: [
+                        { model: db.Brands },
+                    ],
+                    raw: true,
+                    nest: true
+                })
+            }
+            resolve(products)
+        } catch (error) {
+            reject(error)
+        }
+    })
+}
+
+let getAllProductsDeleted = (productId) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            let products = ''
+
+            if (productId === 'ALL') {
+                products = await db.Products.findAll({
+                    where: { deleted: 1 },
+                    include: [
+                        { model: db.Brands },
+                    ],
+                    order: [['updatedAt', 'ASC']],
+                    raw: true,
+                    nest: true
+                })
+            }
+            if (productId && productId !== 'ALL') {
+                products = await db.Products.findOne({
+                    where: { id: productId, deleted: 1 },
                     include: [
                         { model: db.Brands },
                     ],
@@ -35,6 +69,7 @@ let getTopProductsHome = (limit) => {
     return new Promise(async (resolve, reject) => {
         try {
             let products = await db.Products.findAll({
+                where: { deleted: 0 },
                 limit: limit,
                 order: [['createdAt', 'DESC']],
                 raw: true
@@ -63,6 +98,7 @@ let createNewProduct = (data) => {
                 image: data.image,
                 descriptionHTML: data.descriptionHTML,
                 descriptionMarkdown: data.descriptionMarkdown,
+                deleted: 0,
             })
             resolve({
                 errCode: 0,
@@ -117,24 +153,61 @@ let updateProductData = (data) => {
 let deleteProduct = (productId) => {
     return new Promise(async (resolve, reject) => {
         try {
-            let product = await db.Products.findOne({
-                where: { id: productId }
-            })
-            if (!product) {
+            if (!productId) {
                 resolve({
                     errCode: 2,
-                    errMessage: `The product isn't exist!`
+                    Message: 'Missing required parameters'
                 })
             }
-            await db.Products.destroy({
-                where: { id: productId }
+            let product = await db.Products.findOne({
+                where: { id: productId },
+                raw: false
             })
+            if (product) {
+                product.deleted = 1
+                await product.save()
+                resolve({
+                    errCode: 0,
+                    Message: 'Delete product successfully'
+                })
+            } else {
+                resolve({
+                    errCode: 1,
+                    errMessage: 'Delete product failure'
+                })
+            }
+        } catch (error) {
+            reject(error)
+        }
+    })
+}
 
-            resolve({
-                errCode: 0,
-                errMessage: 'Product has been delete!'
+let recoverProduct = (productId) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            if (!productId) {
+                resolve({
+                    errCode: 2,
+                    Message: 'Missing required parameters'
+                })
+            }
+            let product = await db.Products.findOne({
+                where: { id: productId },
+                raw: false
             })
-
+            if (product) {
+                product.deleted = 0
+                await product.save()
+                resolve({
+                    errCode: 0,
+                    Message: 'Recover product successfully'
+                })
+            } else {
+                resolve({
+                    errCode: 1,
+                    errMessage: 'Recover product failure'
+                })
+            }
         } catch (error) {
             reject(error)
         }
@@ -143,8 +216,10 @@ let deleteProduct = (productId) => {
 
 module.exports = {
     getAllProducts: getAllProducts,
+    getAllProductsDeleted: getAllProductsDeleted,
     createNewProduct: createNewProduct,
     updateProductData: updateProductData,
     deleteProduct: deleteProduct,
+    recoverProduct: recoverProduct,
     getTopProductsHome: getTopProductsHome,
 }
