@@ -19,6 +19,24 @@ let handleGetAllProducts = async (req, res) => {
     })
 }
 
+let handleGetAllProductsDeleted = async (req, res) => {
+    let id = req.query.id //ALL, ID
+    if (!id) {
+        return res.status(200).json({
+            errCode: 1,
+            errMessage: 'Missing required parameters!',
+            products: []
+        })
+    }
+    let products = await productService.getAllProductsDeleted(id)
+
+    return res.status(200).json({
+        errCode: 0,
+        errMessage: 'Ok',
+        products
+    })
+}
+
 let handleGetTopProductsHome = async (req, res) => {
     let limit = Number(req.query.limit)
     if (!limit) limit = 10
@@ -56,10 +74,23 @@ let handleDeleteProduct = async (req, res) => {
     return res.status(200).json(message)
 }
 
+let handleRecoverProduct = async (req, res) => {
+    if (!req.body.id) {
+        return res.status(200).json({
+            errCode: 1,
+            errMessage: 'Missing required parameters!'
+        })
+    }
+    let message = await productService.recoverProduct(req.body.id)
+    return res.status(200).json(message)
+}
+
 module.exports = {
     handleGetAllProducts: handleGetAllProducts,
+    handleGetAllProductsDeleted: handleGetAllProductsDeleted,
     handleCreateNewProduct: handleCreateNewProduct,
     handleEditProduct: handleEditProduct,
     handleDeleteProduct: handleDeleteProduct,
+    handleRecoverProduct: handleRecoverProduct,
     handleGetTopProductsHome: handleGetTopProductsHome,
 }
