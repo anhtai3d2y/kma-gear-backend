@@ -109,6 +109,8 @@ let initWebRoutes = (app) => {
 
     //paypal
     router.post('/api/paypal', paypalController.payWithPaypal)
+    router.get('/api/paypal-success', paypalController.paypalSuccess)
+    router.get('/api/paypal-cancel', paypalController.paypalCancel)
 
     return app.use("/", router)
 }
