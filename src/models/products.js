@@ -25,6 +25,8 @@ module.exports = (sequelize, DataTypes) => {
         price: DataTypes.FLOAT,
         discount: DataTypes.INTEGER,
         image: DataTypes.STRING,
+        shortDescHTML: DataTypes.TEXT('long'),
+        shortDescMarkdown: DataTypes.TEXT('long'),
         descriptionHTML: DataTypes.TEXT('long'),
         descriptionMarkdown: DataTypes.TEXT('long'),
         deleted: DataTypes.INTEGER

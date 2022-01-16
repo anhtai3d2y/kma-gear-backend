@@ -96,6 +96,8 @@ let createNewProduct = (data) => {
                 price: data.price,
                 discount: data.discount,
                 image: data.image,
+                shortDescHTML: data.shortDescHTML,
+                shortDescMarkdown: data.shortDescMarkdown,
                 descriptionHTML: data.descriptionHTML,
                 descriptionMarkdown: data.descriptionMarkdown,
                 deleted: 0,
@@ -131,6 +133,8 @@ let updateProductData = (data) => {
                 product.price = data.price
                 product.discount = data.discount
                 product.image = data.image,
+                    product.shortDescHTML = data.shortDescHTML,
+                    product.shortDescMarkdown = data.shortDescMarkdown,
                     product.descriptionHTML = data.descriptionHTML,
                     product.descriptionMarkdown = data.descriptionMarkdown,
                     await product.save()
