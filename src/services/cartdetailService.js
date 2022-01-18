@@ -10,9 +10,13 @@ let getAllCartdetails = (cartdetailId) => {
                 })
             }
             if (cartdetailId && cartdetailId !== 'ALL') {
-                cartdetails = await db.Cartdetails.findOne({
-                    where: { id: cartdetailId },
-                    raw: true
+                cartdetails = await db.Cartdetails.findAll({
+                    where: { cartId: cartdetailId },
+                    include: [
+                        { model: db.Products },
+                    ],
+                    raw: true,
+                    nest: true,
                 })
             }
             resolve(cartdetails)

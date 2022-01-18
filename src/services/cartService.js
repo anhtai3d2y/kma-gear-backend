@@ -15,9 +15,34 @@ let getAllCarts = (cartId) => {
             }
             if (cartId && cartId !== 'ALL') {
                 carts = await db.Carts.findOne({
-                    where: { id: cartId },
+                    where: { userId: cartId },
                     raw: true
                 })
+                if (carts === null) {
+                    let user = await db.Users.findOne({
+                        where: { id: cartId, roleId: '1' },
+                        attributes: {
+                            exclude: ['password']
+                        },
+                        raw: true,
+                        nest: true
+                    })
+                    console.log('user: ', user)
+                    if (user !== null) {
+                        await db.Carts.create({
+                            userId: user.id,
+                            fullName: user.fullName,
+                            email: user.email,
+                            phoneNumber: user.phoneNumber,
+                            address: user.address,
+                            paymentTypeId: 1,
+                        })
+                    }
+                    carts = await db.Carts.findOne({
+                        where: { userId: cartId },
+                        raw: true
+                    })
+                }
             }
             resolve(carts)
         } catch (error) {
