@@ -41,9 +41,21 @@ let handleDeleteCartdetail = async (req, res) => {
     return res.status(200).json(message)
 }
 
+let handleClearCartdetail = async (req, res) => {
+    if (!req.body.id) {
+        return res.status(200).json({
+            errCode: 1,
+            errMessage: 'Missing required parameters!'
+        })
+    }
+    let message = await cartdetailService.clearCartdetail(req.body.id)
+    return res.status(200).json(message)
+}
+
 module.exports = {
     handleGetAllCartdetails: handleGetAllCartdetails,
     handleCreateNewCartdetail: handleCreateNewCartdetail,
     handleEditCartdetail: handleEditCartdetail,
     handleDeleteCartdetail: handleDeleteCartdetail,
+    handleClearCartdetail: handleClearCartdetail,
 }

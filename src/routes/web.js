@@ -106,6 +106,7 @@ let initWebRoutes = (app) => {
     router.post('/api/create-new-cartdetail', cartdetailController.handleCreateNewCartdetail)
     router.put('/api/edit-cartdetail', cartdetailController.handleEditCartdetail)
     router.delete('/api/delete-cartdetail', cartdetailController.handleDeleteCartdetail)
+    router.delete('/api/clear-cartdetail', cartdetailController.handleClearCartdetail)
 
     //paypal
     router.post('/api/paypal', paypalController.payWithPaypal)

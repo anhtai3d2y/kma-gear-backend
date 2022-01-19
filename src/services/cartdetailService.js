@@ -109,9 +109,36 @@ let deleteCartdetail = (cartdetailId) => {
     })
 }
 
+let clearCartdetail = (cartId) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            let cartdetails = await db.Cartdetails.findAll({
+                where: { cartId: cartId }
+            })
+            if (!cartdetails) {
+                resolve({
+                    errCode: 2,
+                    errMessage: `The cartdetail isn't exist!`
+                })
+            }
+            await db.Cartdetails.destroy({
+                where: { cartId: cartId }
+            })
+
+            resolve({
+                errCode: 0,
+                errMessage: 'Cartdetail has been clear!'
+            })
+
+        } catch (error) {
+            reject(error)
+        }
+    })
+}
 module.exports = {
     getAllCartdetails: getAllCartdetails,
     createNewCartdetail: createNewCartdetail,
     updateCartdetailData: updateCartdetailData,
     deleteCartdetail: deleteCartdetail,
+    clearCartdetail: clearCartdetail,
 }
