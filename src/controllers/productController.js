@@ -57,6 +57,11 @@ let handleCreateNewProduct = async (req, res) => {
     return res.status(200).json(message)
 }
 
+let handleUpdateAmountProduct = async (req, res) => {
+    let message = await productService.bulkUpdateAmountProduct(req.body)
+    return res.status(200).json(message)
+}
+
 let handleEditProduct = async (req, res) => {
     let data = req.body
     let message = await productService.updateProductData(data)
@@ -89,6 +94,7 @@ module.exports = {
     handleGetAllProducts: handleGetAllProducts,
     handleGetAllProductsDeleted: handleGetAllProductsDeleted,
     handleCreateNewProduct: handleCreateNewProduct,
+    handleUpdateAmountProduct: handleUpdateAmountProduct,
     handleEditProduct: handleEditProduct,
     handleDeleteProduct: handleDeleteProduct,
     handleRecoverProduct: handleRecoverProduct,

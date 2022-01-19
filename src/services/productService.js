@@ -112,6 +112,24 @@ let createNewProduct = (data) => {
     })
 }
 
+let bulkUpdateAmountProduct = (data) => {
+    // console.log("product: ", data)
+    return new Promise(async (resolve, reject) => {
+        try {
+            let product = await db.Products.bulkCreate(data, {
+                updateOnDuplicate: ["amount"]
+            })
+            console.log(product)
+            resolve({
+                errCode: 0,
+                errMessage: 'Ok'
+            })
+        } catch (error) {
+            reject(error)
+        }
+    })
+}
+
 let updateProductData = (data) => {
     return new Promise(async (resolve, reject) => {
         try {
@@ -222,6 +240,7 @@ module.exports = {
     getAllProducts: getAllProducts,
     getAllProductsDeleted: getAllProductsDeleted,
     createNewProduct: createNewProduct,
+    bulkUpdateAmountProduct: bulkUpdateAmountProduct,
     updateProductData: updateProductData,
     deleteProduct: deleteProduct,
     recoverProduct: recoverProduct,

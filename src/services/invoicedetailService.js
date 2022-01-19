@@ -47,7 +47,6 @@ let createNewInvoicedetail = (data) => {
 }
 
 let bulkCreateInvoicedetail = (data) => {
-    console.log('invoicedetail: ', data)
     return new Promise(async (resolve, reject) => {
         try {
             await db.Invoicedetails.bulkCreate(data)
