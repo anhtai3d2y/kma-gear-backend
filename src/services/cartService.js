@@ -27,7 +27,6 @@ let getAllCarts = (cartId) => {
                         raw: true,
                         nest: true
                     })
-                    console.log('user: ', user)
                     if (user !== null) {
                         await db.Carts.create({
                             userId: user.id,
