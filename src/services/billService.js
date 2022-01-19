@@ -30,7 +30,7 @@ let getAllBills = (billId) => {
 let createNewBill = (data) => {
     return new Promise(async (resolve, reject) => {
         try {
-            await db.Bills.create({
+            let bill = await db.Bills.create({
                 userId: data.userId,
                 fullName: data.fullName,
                 email: data.email,
@@ -42,7 +42,8 @@ let createNewBill = (data) => {
             })
             resolve({
                 errCode: 0,
-                errMessage: 'Ok'
+                errMessage: 'Ok',
+                bill
             })
         } catch (error) {
             reject(error)

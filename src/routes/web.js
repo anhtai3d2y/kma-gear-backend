@@ -100,6 +100,8 @@ let initWebRoutes = (app) => {
     router.post('/api/create-new-invoicedetail', invoicedetailController.handleCreateNewInvoicedetail)
     router.put('/api/edit-invoicedetail', invoicedetailController.handleEditInvoicedetail)
     router.delete('/api/delete-invoicedetail', invoicedetailController.handleDeleteInvoicedetail)
+    router.post('/api/bulk-create-invoicedetail', invoicedetailController.handleBulkCreateInvoicedetail)
+
 
     //cartdetail routes
     router.get('/api/get-all-cartdetails', cartdetailController.handleGetAllCartdetails)

@@ -46,6 +46,21 @@ let createNewInvoicedetail = (data) => {
     })
 }
 
+let bulkCreateInvoicedetail = (data) => {
+    console.log('invoicedetail: ', data)
+    return new Promise(async (resolve, reject) => {
+        try {
+            await db.Invoicedetails.bulkCreate(data)
+            resolve({
+                errCode: 0,
+                errMessage: 'Ok'
+            })
+        } catch (error) {
+            reject(error)
+        }
+    })
+}
+
 let updateInvoicedetailData = (data) => {
     return new Promise(async (resolve, reject) => {
         try {
@@ -112,6 +127,7 @@ let deleteInvoicedetail = (invoicedetailId) => {
 module.exports = {
     getAllInvoicedetails: getAllInvoicedetails,
     createNewInvoicedetail: createNewInvoicedetail,
+    bulkCreateInvoicedetail: bulkCreateInvoicedetail,
     updateInvoicedetailData: updateInvoicedetailData,
     deleteInvoicedetail: deleteInvoicedetail,
 }

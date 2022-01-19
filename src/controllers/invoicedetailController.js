@@ -24,6 +24,11 @@ let handleCreateNewInvoicedetail = async (req, res) => {
     return res.status(200).json(message)
 }
 
+let handleBulkCreateInvoicedetail = async (req, res) => {
+    let message = await invoicedetailService.bulkCreateInvoicedetail(req.body)
+    return res.status(200).json(message)
+}
+
 let handleEditInvoicedetail = async (req, res) => {
     let data = req.body
     let message = await invoicedetailService.updateInvoicedetailData(data)
@@ -44,6 +49,7 @@ let handleDeleteInvoicedetail = async (req, res) => {
 module.exports = {
     handleGetAllInvoicedetails: handleGetAllInvoicedetails,
     handleCreateNewInvoicedetail: handleCreateNewInvoicedetail,
+    handleBulkCreateInvoicedetail: handleBulkCreateInvoicedetail,
     handleEditInvoicedetail: handleEditInvoicedetail,
     handleDeleteInvoicedetail: handleDeleteInvoicedetail,
 }
