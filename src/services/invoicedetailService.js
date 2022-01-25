@@ -14,8 +14,8 @@ let getAllInvoicedetails = (invoicedetailId) => {
                 })
             }
             if (invoicedetailId && invoicedetailId !== 'ALL') {
-                invoicedetails = await db.Invoicedetails.findOne({
-                    where: { id: invoicedetailId },
+                invoicedetails = await db.Invoicedetails.findAll({
+                    where: { billId: invoicedetailId },
                     raw: true
                 })
             }

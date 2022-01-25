@@ -119,7 +119,6 @@ let bulkUpdateAmountProduct = (data) => {
             let product = await db.Products.bulkCreate(data, {
                 updateOnDuplicate: ["amount"]
             })
-            console.log(product)
             resolve({
                 errCode: 0,
                 errMessage: 'Ok'

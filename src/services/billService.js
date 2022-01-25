@@ -27,6 +27,21 @@ let getAllBills = (billId) => {
     })
 }
 
+let getBillByPayid = (payId) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            let bills = ''
+            bills = await db.Bills.findOne({
+                where: { payId: payId },
+                raw: true
+            })
+            resolve(bills)
+        } catch (error) {
+            reject(error)
+        }
+    })
+}
+
 let createNewBill = (data) => {
     return new Promise(async (resolve, reject) => {
         try {
@@ -39,6 +54,8 @@ let createNewBill = (data) => {
                 note: data.note,
                 stateId: data.stateId,
                 paymentTypeId: data.paymentTypeId,
+                payId: data.payId,
+                totalPrice: data.totalPrice
             })
             resolve({
                 errCode: 0,
@@ -119,6 +136,7 @@ let deleteBill = (billId) => {
 
 module.exports = {
     getAllBills: getAllBills,
+    getBillByPayid: getBillByPayid,
     createNewBill: createNewBill,
     updateBillData: updateBillData,
     deleteBill: deleteBill,
