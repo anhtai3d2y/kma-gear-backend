@@ -6,8 +6,8 @@ const paypal = require('paypal-rest-sdk');
 
 paypal.configure({
     'mode': 'sandbox', //sandbox or live
-    'client_id': 'AeW1yFwajTaiDGXbasMaW7TzaNJiGwMPsNHXI7TAVspBpjwocg4z4lNaLtkXNMSuAnlVmT081miMrRBm',
-    'client_secret': 'EHugYMrVgLbSRDywiotgb08QZyAyfDPX7yvDRVdtmMOmjUFkSM0m_FQOioYo2hCqV2aIviAWWaNLAeKB'
+    'client_id': process.env.PAYPAL_CLIENT_ID,
+    'client_secret': process.env.PAYPAL_CLIENT_SECRET
 });
 
 let payWithPaypal = (req, res) => {
