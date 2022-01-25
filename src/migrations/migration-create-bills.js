@@ -10,6 +10,8 @@ module.exports = {
             // note: DataTypes.TEXT,
             // statusId: DataTypes.INTEGER,
             // paymentTypeId: DataTypes.INTEGER,
+            // payId: data.payId,
+            // totalPrice: data.totalPrice
 
             id: {
                 allowNull: false,
@@ -41,6 +43,12 @@ module.exports = {
             },
             paymentTypeId: {
                 type: Sequelize.INTEGER
+            },
+            payId: {
+                type: Sequelize.STRING
+            },
+            totalPrice: {
+                type: Sequelize.STRING
             },
             createdAt: {
                 allowNull: false,
