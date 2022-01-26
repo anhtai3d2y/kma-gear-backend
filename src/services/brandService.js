@@ -6,12 +6,36 @@ let getAllBrands = (brandId) => {
             let brands = ''
             if (brandId === 'ALL') {
                 brands = await db.Brands.findAll({
+                    where: { deleted: 0 },
                     raw: true
                 })
             }
             if (brandId && brandId !== 'ALL') {
                 brands = await db.Brands.findOne({
-                    where: { id: brandId },
+                    where: { id: brandId, deleted: 0 },
+                    raw: true
+                })
+            }
+            resolve(brands)
+        } catch (error) {
+            reject(error)
+        }
+    })
+}
+
+let getAllBrandsDeleted = (brandId) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            let brands = ''
+            if (brandId === 'ALL') {
+                brands = await db.Brands.findAll({
+                    where: { deleted: 1 },
+                    raw: true
+                })
+            }
+            if (brandId && brandId !== 'ALL') {
+                brands = await db.Brands.findOne({
+                    where: { id: brandId, deleted: 1 },
                     raw: true
                 })
             }
@@ -75,24 +99,61 @@ let updateBrandData = (data) => {
 let deleteBrand = (brandId) => {
     return new Promise(async (resolve, reject) => {
         try {
-            let brand = await db.Brands.findOne({
-                where: { id: brandId }
-            })
-            if (!brand) {
+            if (!brandId) {
                 resolve({
                     errCode: 2,
-                    errMessage: `The brand isn't exist!`
+                    Message: 'Missing required parameters'
                 })
             }
-            await db.Brands.destroy({
-                where: { id: brandId }
+            let brand = await db.Brands.findOne({
+                where: { id: brandId },
+                raw: false
             })
+            if (brand) {
+                brand.deleted = 1
+                await brand.save()
+                resolve({
+                    errCode: 0,
+                    Message: 'Delete brand successfully'
+                })
+            } else {
+                resolve({
+                    errCode: 1,
+                    errMessage: 'Delete brand failure'
+                })
+            }
+        } catch (error) {
+            reject(error)
+        }
+    })
+}
 
-            resolve({
-                errCode: 0,
-                errMessage: 'Brand has been delete!'
+let recoverBrand = (brandId) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            if (!brandId) {
+                resolve({
+                    errCode: 2,
+                    Message: 'Missing required parameters'
+                })
+            }
+            let brand = await db.Brands.findOne({
+                where: { id: brandId },
+                raw: false
             })
-
+            if (brand) {
+                brand.deleted = 0
+                await brand.save()
+                resolve({
+                    errCode: 0,
+                    Message: 'Recover brand successfully'
+                })
+            } else {
+                resolve({
+                    errCode: 1,
+                    errMessage: 'Recover brand failure'
+                })
+            }
         } catch (error) {
             reject(error)
         }
@@ -101,7 +162,9 @@ let deleteBrand = (brandId) => {
 
 module.exports = {
     getAllBrands: getAllBrands,
+    getAllBrandsDeleted: getAllBrandsDeleted,
     createNewBrand: createNewBrand,
     updateBrandData: updateBrandData,
     deleteBrand: deleteBrand,
+    recoverBrand: recoverBrand,
 }
