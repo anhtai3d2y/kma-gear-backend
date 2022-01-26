@@ -154,6 +154,40 @@ let getAllUsers = (userId) => {
     })
 }
 
+let getAllUsersDeleted = (userId) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            let users = ''
+            if (userId === 'ALL') {
+                users = await db.Users.findAll({
+                    attributes: {
+                        exclude: ['password']
+                    },
+                    where: { roleId: 1, deleted: 1 },
+                    raw: true
+                })
+            }
+            if (userId && userId !== 'ALL') {
+                users = await db.Users.findOne({
+                    where: { id: userId, deleted: 1 },
+                    attributes: {
+                        exclude: ['password']
+                    },
+                    include: [
+                        { model: db.Carts },
+                        { model: db.Bills },
+                    ],
+                    raw: true,
+                    nest: true
+                })
+            }
+            resolve(users)
+        } catch (error) {
+            reject(error)
+        }
+    })
+}
+
 let createNewUser = (data) => {
 
     return new Promise(async (resolve, reject) => {
@@ -293,6 +327,7 @@ module.exports = {
     handleCustomerLogin: handleCustomerLogin,
     checkUserEmail: checkUserEmail,
     getAllUsers: getAllUsers,
+    getAllUsersDeleted: getAllUsersDeleted,
     createNewUser: createNewUser,
     updateUserData: updateUserData,
     deleteUser: deleteUser,

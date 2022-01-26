@@ -68,6 +68,24 @@ let handleGetAllUsers = async (req, res) => {
     })
 }
 
+let handleGetAllUsersDeleted = async (req, res) => {
+    let id = req.query.id //ALL, ID
+    if (!id) {
+        return res.status(200).json({
+            errCode: 1,
+            errMessage: 'Missing required parameters',
+            users: []
+        })
+    }
+    let users = await userService.getAllUsersDeleted(id)
+
+    return res.status(200).json({
+        errCode: 0,
+        errMessage: 'Ok',
+        users
+    })
+}
+
 let handleCreateNewUser = async (req, res) => {
     let message = await userService.createNewUser(req.body)
     return res.status(200).json(message)
@@ -105,6 +123,7 @@ module.exports = {
     handleLogin: handleLogin,
     handleCustomerLogin: handleCustomerLogin,
     handleGetAllUsers: handleGetAllUsers,
+    handleGetAllUsersDeleted: handleGetAllUsersDeleted,
     handleCreateNewUser: handleCreateNewUser,
     handleEditUser: handleEditUser,
     handleDeleteUser: handleDeleteUser,
