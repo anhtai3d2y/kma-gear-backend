@@ -6,12 +6,37 @@ let getAllCategorys = (categoryId) => {
             let categorys = ''
             if (categoryId === 'ALL') {
                 categorys = await db.Categorys.findAll({
+                    where: { deleted: 0 },
                     raw: true
                 })
             }
             if (categoryId && categoryId !== 'ALL') {
                 categorys = await db.Categorys.findOne({
-                    where: { id: categoryId },
+                    where: { id: categoryId, deleted: 0 },
+                    raw: true
+                })
+            }
+            resolve(categorys)
+        } catch (error) {
+            reject(error)
+        }
+    })
+}
+
+let getAllCategorysDeleted = (categoryId) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            let categorys = ''
+            if (categoryId === 'ALL') {
+                categorys = await db.Categorys.findAll({
+                    where: { deleted: 1 },
+                    order: [['updatedAt', 'ASC']],
+                    raw: true
+                })
+            }
+            if (categoryId && categoryId !== 'ALL') {
+                categorys = await db.Categorys.findOne({
+                    where: { id: categoryId, deleted: 1 },
                     raw: true
                 })
             }
@@ -75,24 +100,61 @@ let updateCategoryData = (data) => {
 let deleteCategory = (categoryId) => {
     return new Promise(async (resolve, reject) => {
         try {
-            let category = await db.Categorys.findOne({
-                where: { id: categoryId }
-            })
-            if (!category) {
+            if (!categoryId) {
                 resolve({
                     errCode: 2,
-                    errMessage: `The category isn't exist!`
+                    Message: 'Missing required parameters'
                 })
             }
-            await db.Categorys.destroy({
-                where: { id: categoryId }
+            let category = await db.Categorys.findOne({
+                where: { id: categoryId },
+                raw: false
             })
+            if (category) {
+                category.deleted = 1
+                await category.save()
+                resolve({
+                    errCode: 0,
+                    Message: 'Delete category successfully'
+                })
+            } else {
+                resolve({
+                    errCode: 1,
+                    errMessage: 'Delete category failure'
+                })
+            }
+        } catch (error) {
+            reject(error)
+        }
+    })
+}
 
-            resolve({
-                errCode: 0,
-                errMessage: 'Category has been delete!'
+let recoverCategory = (categoryId) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            if (!categoryId) {
+                resolve({
+                    errCode: 2,
+                    Message: 'Missing required parameters'
+                })
+            }
+            let category = await db.Categorys.findOne({
+                where: { id: categoryId },
+                raw: false
             })
-
+            if (category) {
+                category.deleted = 0
+                await category.save()
+                resolve({
+                    errCode: 0,
+                    Message: 'Recover category successfully'
+                })
+            } else {
+                resolve({
+                    errCode: 1,
+                    errMessage: 'Recover category failure'
+                })
+            }
         } catch (error) {
             reject(error)
         }
@@ -101,7 +163,9 @@ let deleteCategory = (categoryId) => {
 
 module.exports = {
     getAllCategorys: getAllCategorys,
+    getAllCategorysDeleted: getAllCategorysDeleted,
     createNewCategory: createNewCategory,
     updateCategoryData: updateCategoryData,
     deleteCategory: deleteCategory,
+    recoverCategory: recoverCategory,
 }

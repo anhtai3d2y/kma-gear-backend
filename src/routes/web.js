@@ -67,9 +67,12 @@ let initWebRoutes = (app) => {
 
     //category routes
     router.get('/api/get-all-categorys', categoryController.handleGetAllCategorys)
+    router.get('/api/get-all-categorys-deleted', categoryController.handleGetAllCategorysDeleted)
     router.post('/api/create-new-category', categoryController.handleCreateNewCategory)
     router.put('/api/edit-category', categoryController.handleEditCategory)
     router.delete('/api/delete-category', categoryController.handleDeleteCategory)
+    router.delete('/api/recover-category', categoryController.handleRecoverCategory)
+
 
     //brand routes
     router.get('/api/get-all-brands', brandController.handleGetAllBrands)
