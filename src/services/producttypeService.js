@@ -27,6 +27,33 @@ let getAllProducttypes = (producttypeId) => {
     })
 }
 
+let getAllProducttypesDeleted = (producttypeId) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            let producttypes = ''
+            if (producttypeId === 'ALL') {
+                producttypes = await db.Producttypes.findAll({
+                    include: [
+                        { model: db.Categorys },
+                    ],
+                    where: { deleted: 1 },
+                    raw: true,
+                    nest: true
+                })
+            }
+            if (producttypeId && producttypeId !== 'ALL') {
+                producttypes = await db.Producttypes.findOne({
+                    where: { id: producttypeId, deleted: 1 },
+                    raw: true
+                })
+            }
+            resolve(producttypes)
+        } catch (error) {
+            reject(error)
+        }
+    })
+}
+
 let createNewProducttype = (data) => {
     return new Promise(async (resolve, reject) => {
         try {
@@ -142,6 +169,7 @@ let recoverProducttype = (producttypeId) => {
 }
 module.exports = {
     getAllProducttypes: getAllProducttypes,
+    getAllProducttypesDeleted: getAllProducttypesDeleted,
     createNewProducttype: createNewProducttype,
     updateProducttypeData: updateProducttypeData,
     deleteProducttype: deleteProducttype,
