@@ -17,6 +17,7 @@ module.exports = (sequelize, DataTypes) => {
         link: DataTypes.STRING,
         image: DataTypes.STRING,
         type: DataTypes.INTEGER,
+        deleted: DataTypes.INTEGER,
     }, {
         sequelize,
         modelName: 'Banners',

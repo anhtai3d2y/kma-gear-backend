@@ -4,6 +4,8 @@ module.exports = {
         await queryInterface.createTable('producttypes', {
             // typeName: DataTypes.STRING,
             // categoryId: DataTypes.INTEGER,
+            // deleted: DataTypes.INTEGER,
+
             id: {
                 allowNull: false,
                 autoIncrement: true,
@@ -14,6 +16,9 @@ module.exports = {
                 type: Sequelize.STRING
             },
             categoryId: {
+                type: Sequelize.INTEGER
+            },
+            deleted: {
                 type: Sequelize.INTEGER
             },
             createdAt: {

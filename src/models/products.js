@@ -29,7 +29,7 @@ module.exports = (sequelize, DataTypes) => {
         shortDescMarkdown: DataTypes.TEXT('long'),
         descriptionHTML: DataTypes.TEXT('long'),
         descriptionMarkdown: DataTypes.TEXT('long'),
-        deleted: DataTypes.INTEGER
+        deleted: DataTypes.INTEGER,
     }, {
         sequelize,
         modelName: 'Products',

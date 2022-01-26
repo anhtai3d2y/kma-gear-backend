@@ -7,7 +7,9 @@ module.exports = {
       // fullName: DataTypes.STRING,
       // phoneNumber: DataTypes.STRING,
       // address: DataTypes.STRING,
-      // roleId: DataTypes.STRING
+      // roleId: DataTypes.STRING,
+      // deleted: DataTypes.INTEGER,
+
 
       id: {
         allowNull: false,
@@ -32,6 +34,9 @@ module.exports = {
       },
       roleId: {
         type: Sequelize.STRING
+      },
+      deleted: {
+        type: Sequelize.INTEGER
       },
       createdAt: {
         allowNull: false,

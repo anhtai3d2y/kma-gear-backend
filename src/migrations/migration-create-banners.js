@@ -5,7 +5,7 @@ module.exports = {
             // link: DataTypes.STRING,
             // image: DataTypes.STRING,
             // type: DataTypes.INTEGER,
-
+            // deleted: DataTypes.INTEGER,
             id: {
                 allowNull: false,
                 autoIncrement: true,
@@ -19,6 +19,9 @@ module.exports = {
                 type: Sequelize.STRING
             },
             type: {
+                type: Sequelize.INTEGER
+            },
+            deleted: {
                 type: Sequelize.INTEGER
             },
             createdAt: {

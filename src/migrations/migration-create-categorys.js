@@ -4,6 +4,7 @@ module.exports = {
         await queryInterface.createTable('categorys', {
             // name: DataTypes.STRING,
             // image: DataTypes.STRING,
+            // deleted: DataTypes.INTEGER,
             id: {
                 allowNull: false,
                 autoIncrement: true,
@@ -15,6 +16,9 @@ module.exports = {
             },
             image: {
                 type: Sequelize.STRING
+            },
+            deleted: {
+                type: Sequelize.INTEGER
             },
             createdAt: {
                 allowNull: false,
