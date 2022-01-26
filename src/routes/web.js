@@ -49,10 +49,12 @@ let initWebRoutes = (app) => {
 
     //bill routes
     router.get('/api/get-all-bills', billController.handleGetAllBills)
+    router.get('/api/get-all-bills-deleted', billController.handleGetAllBillsDeleted)
     router.get('/api/get-bill-by-payid', billController.handleGetBillByPayid)
     router.post('/api/create-new-bill', billController.handleCreateNewBill)
     router.put('/api/edit-bill', billController.handleEditBill)
     router.delete('/api/delete-bill', billController.handleDeleteBill)
+    router.delete('/api/recover-bill', billController.handleRecoverBill)
 
     //state routes
     router.get('/api/get-all-states', stateController.handleGetAllStates)

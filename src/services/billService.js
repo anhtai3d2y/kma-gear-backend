@@ -10,13 +10,42 @@ let getAllBills = (billId) => {
                         { model: db.States },
                         { model: db.Users },
                     ],
+                    where: { deleted: 0 },
                     raw: true,
                     nest: true
                 })
             }
             if (billId && billId !== 'ALL') {
                 bills = await db.Bills.findOne({
-                    where: { id: billId },
+                    where: { id: billId, deleted: 0 },
+                    raw: true
+                })
+            }
+            resolve(bills)
+        } catch (error) {
+            reject(error)
+        }
+    })
+}
+
+let getAllBillsDeleted = (billId) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            let bills = ''
+            if (billId === 'ALL') {
+                bills = await db.Bills.findAll({
+                    include: [
+                        { model: db.States },
+                        { model: db.Users },
+                    ],
+                    where: { deleted: 1 },
+                    raw: true,
+                    nest: true
+                })
+            }
+            if (billId && billId !== 'ALL') {
+                bills = await db.Bills.findOne({
+                    where: { id: billId, deleted: 1 },
                     raw: true
                 })
             }
@@ -110,24 +139,61 @@ let updateBillData = (data) => {
 let deleteBill = (billId) => {
     return new Promise(async (resolve, reject) => {
         try {
-            let bill = await db.Bills.findOne({
-                where: { id: billId }
-            })
-            if (!bill) {
+            if (!billId) {
                 resolve({
                     errCode: 2,
-                    errMessage: `The bill isn't exist!`
+                    Message: 'Missing required parameters'
                 })
             }
-            await db.Bills.destroy({
-                where: { id: billId }
+            let bill = await db.Bills.findOne({
+                where: { id: billId },
+                raw: false
             })
+            if (bill) {
+                bill.deleted = 1
+                await bill.save()
+                resolve({
+                    errCode: 0,
+                    Message: 'Delete bill successfully'
+                })
+            } else {
+                resolve({
+                    errCode: 1,
+                    errMessage: 'Delete bill failure'
+                })
+            }
+        } catch (error) {
+            reject(error)
+        }
+    })
+}
 
-            resolve({
-                errCode: 0,
-                errMessage: 'Bill has been delete!'
+let recoverBill = (billId) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            if (!billId) {
+                resolve({
+                    errCode: 2,
+                    Message: 'Missing required parameters'
+                })
+            }
+            let bill = await db.Bills.findOne({
+                where: { id: billId },
+                raw: false
             })
-
+            if (bill) {
+                bill.deleted = 0
+                await bill.save()
+                resolve({
+                    errCode: 0,
+                    Message: 'Recover bill successfully'
+                })
+            } else {
+                resolve({
+                    errCode: 1,
+                    errMessage: 'Recover bill failure'
+                })
+            }
         } catch (error) {
             reject(error)
         }
@@ -136,8 +202,10 @@ let deleteBill = (billId) => {
 
 module.exports = {
     getAllBills: getAllBills,
+    getAllBillsDeleted: getAllBillsDeleted,
     getBillByPayid: getBillByPayid,
     createNewBill: createNewBill,
     updateBillData: updateBillData,
     deleteBill: deleteBill,
+    recoverBill: recoverBill,
 }

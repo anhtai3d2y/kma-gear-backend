@@ -19,6 +19,24 @@ let handleGetAllBills = async (req, res) => {
     })
 }
 
+let handleGetAllBillsDeleted = async (req, res) => {
+    let id = req.query.id //ALL, ID
+    if (!id) {
+        return res.status(200).json({
+            errCode: 1,
+            errMessage: 'Missing required parameters!',
+            bills: []
+        })
+    }
+    let bills = await billService.getAllBillsDeleted(id)
+
+    return res.status(200).json({
+        errCode: 0,
+        errMessage: 'Ok',
+        bills
+    })
+}
+
 let handleGetBillByPayid = async (req, res) => {
     let id = req.query.payId
     if (!id) {
@@ -59,10 +77,23 @@ let handleDeleteBill = async (req, res) => {
     return res.status(200).json(message)
 }
 
+let handleRecoverBill = async (req, res) => {
+    if (!req.body.id) {
+        return res.status(200).json({
+            errCode: 1,
+            errMessage: 'Missing required parameters!'
+        })
+    }
+    let message = await billService.recoverBill(req.body.id)
+    return res.status(200).json(message)
+}
+
 module.exports = {
     handleGetAllBills: handleGetAllBills,
+    handleGetAllBillsDeleted: handleGetAllBillsDeleted,
     handleGetBillByPayid: handleGetBillByPayid,
     handleCreateNewBill: handleCreateNewBill,
     handleEditBill: handleEditBill,
     handleDeleteBill: handleDeleteBill,
+    handleRecoverBill: handleRecoverBill,
 }
