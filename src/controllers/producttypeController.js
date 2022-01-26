@@ -41,9 +41,21 @@ let handleDeleteProducttype = async (req, res) => {
     return res.status(200).json(message)
 }
 
+let handleRecoverProducttype = async (req, res) => {
+    if (!req.body.id) {
+        return res.status(200).json({
+            errCode: 1,
+            errMessage: 'Missing required parameters!'
+        })
+    }
+    let message = await producttypeService.recoverProducttype(req.body.id)
+    return res.status(200).json(message)
+}
+
 module.exports = {
     handleGetAllProducttypes: handleGetAllProducttypes,
     handleCreateNewProducttype: handleCreateNewProducttype,
     handleEditProducttype: handleEditProducttype,
     handleDeleteProducttype: handleDeleteProducttype,
+    handleRecoverProducttype: handleRecoverProducttype,
 }

@@ -9,13 +9,14 @@ let getAllProducttypes = (producttypeId) => {
                     include: [
                         { model: db.Categorys },
                     ],
+                    where: { deleted: 0 },
                     raw: true,
                     nest: true
                 })
             }
             if (producttypeId && producttypeId !== 'ALL') {
                 producttypes = await db.Producttypes.findOne({
-                    where: { id: producttypeId },
+                    where: { id: producttypeId, deleted: 0 },
                     raw: true
                 })
             }
@@ -79,33 +80,70 @@ let updateProducttypeData = (data) => {
 let deleteProducttype = (producttypeId) => {
     return new Promise(async (resolve, reject) => {
         try {
-            let producttype = await db.Producttypes.findOne({
-                where: { id: producttypeId }
-            })
-            if (!producttype) {
+            if (!producttypeId) {
                 resolve({
                     errCode: 2,
-                    errMessage: `The producttype isn't exist!`
+                    Message: 'Missing required parameters'
                 })
             }
-            await db.Producttypes.destroy({
-                where: { id: producttypeId }
+            let producttype = await db.Producttypes.findOne({
+                where: { id: producttypeId },
+                raw: false
             })
-
-            resolve({
-                errCode: 0,
-                errMessage: 'Producttype has been delete!'
-            })
-
+            if (producttype) {
+                producttype.deleted = 1
+                await producttype.save()
+                resolve({
+                    errCode: 0,
+                    Message: 'Delete product type successfully'
+                })
+            } else {
+                resolve({
+                    errCode: 1,
+                    errMessage: 'Delete product type failure'
+                })
+            }
         } catch (error) {
             reject(error)
         }
     })
 }
 
+let recoverProducttype = (producttypeId) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            if (!producttypeId) {
+                resolve({
+                    errCode: 2,
+                    Message: 'Missing required parameters'
+                })
+            }
+            let producttype = await db.Producttypes.findOne({
+                where: { id: producttypeId },
+                raw: false
+            })
+            if (producttype) {
+                producttype.deleted = 0
+                await producttype.save()
+                resolve({
+                    errCode: 0,
+                    Message: 'Recover product type successfully'
+                })
+            } else {
+                resolve({
+                    errCode: 1,
+                    errMessage: 'Recover product type failure'
+                })
+            }
+        } catch (error) {
+            reject(error)
+        }
+    })
+}
 module.exports = {
     getAllProducttypes: getAllProducttypes,
     createNewProducttype: createNewProducttype,
     updateProducttypeData: updateProducttypeData,
     deleteProducttype: deleteProducttype,
+    recoverProducttype: recoverProducttype,
 }

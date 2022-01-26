@@ -135,7 +135,7 @@ let getAllUsers = (userId) => {
             }
             if (userId && userId !== 'ALL') {
                 users = await db.Users.findOne({
-                    where: { id: userId },
+                    where: { id: userId, deleted: 0 },
                     attributes: {
                         exclude: ['password']
                     },
