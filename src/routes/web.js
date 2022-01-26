@@ -35,6 +35,8 @@ let initWebRoutes = (app) => {
     router.post('/api/create-new-user', userController.handleCreateNewUser)
     router.put('/api/edit-user', userController.handleEditUser)
     router.delete('/api/delete-user', userController.handleDeleteUser)
+    router.delete('/api/recover-user', userController.handleRecoverUser)
+
 
     //banner routes
     router.get('/api/get-all-banners', bannerController.handleGetAllBanners)

@@ -129,7 +129,7 @@ let getAllUsers = (userId) => {
                     attributes: {
                         exclude: ['password']
                     },
-                    where: { roleId: 1 },
+                    where: { roleId: 1, deleted: 0 },
                     raw: true
                 })
             }
@@ -227,24 +227,61 @@ let updateUserData = (data) => {
 let deleteUser = (userId) => {
     return new Promise(async (resolve, reject) => {
         try {
-            let user = await db.Users.findOne({
-                where: { id: userId }
-            })
-            if (!user) {
+            if (!userId) {
                 resolve({
                     errCode: 2,
-                    errMessage: `The user isn't exist!`
+                    Message: 'Missing required parameters'
                 })
             }
-            await db.Users.destroy({
-                where: { id: userId }
+            let user = await db.Users.findOne({
+                where: { id: userId },
+                raw: false
             })
+            if (user) {
+                user.deleted = 1
+                await user.save()
+                resolve({
+                    errCode: 0,
+                    Message: 'Delete user successfully'
+                })
+            } else {
+                resolve({
+                    errCode: 1,
+                    errMessage: 'Delete user failure'
+                })
+            }
+        } catch (error) {
+            reject(error)
+        }
+    })
+}
 
-            resolve({
-                errCode: 0,
-                errMessage: 'User has been delete!'
+let recoverUser = (userId) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            if (!userId) {
+                resolve({
+                    errCode: 2,
+                    Message: 'Missing required parameters'
+                })
+            }
+            let user = await db.Users.findOne({
+                where: { id: userId },
+                raw: false
             })
-
+            if (user) {
+                user.deleted = 0
+                await user.save()
+                resolve({
+                    errCode: 0,
+                    Message: 'Recover user successfully'
+                })
+            } else {
+                resolve({
+                    errCode: 1,
+                    errMessage: 'Recover user failure'
+                })
+            }
         } catch (error) {
             reject(error)
         }
@@ -259,4 +296,5 @@ module.exports = {
     createNewUser: createNewUser,
     updateUserData: updateUserData,
     deleteUser: deleteUser,
+    recoverUser: recoverUser,
 }

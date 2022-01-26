@@ -90,6 +90,17 @@ let handleDeleteUser = async (req, res) => {
     return res.status(200).json(message)
 }
 
+let handleRecoverUser = async (req, res) => {
+    if (!req.body.id) {
+        return res.status(200).json({
+            errCode: 1,
+            errMessage: 'Missing required parameters!'
+        })
+    }
+    let message = await userService.recoverUser(req.body.id)
+    return res.status(200).json(message)
+}
+
 module.exports = {
     handleLogin: handleLogin,
     handleCustomerLogin: handleCustomerLogin,
@@ -97,4 +108,5 @@ module.exports = {
     handleCreateNewUser: handleCreateNewUser,
     handleEditUser: handleEditUser,
     handleDeleteUser: handleDeleteUser,
+    handleRecoverUser: handleRecoverUser,
 }
