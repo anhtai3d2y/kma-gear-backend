@@ -41,11 +41,13 @@ let initWebRoutes = (app) => {
 
     //banner routes
     router.get('/api/get-all-banners', bannerController.handleGetAllBanners)
+    router.get('/api/get-all-banners-deleted', bannerController.handleGetAllBannersDeleted)
     router.get('/api/get-all-main-banners', bannerController.handleGetAllMainBanners)
     router.get('/api/get-all-sub-banners', bannerController.handleGetAllSubBanners)
     router.post('/api/create-new-banner', bannerController.handleCreateNewBanner)
     router.put('/api/edit-banner', bannerController.handleEditBanner)
     router.delete('/api/delete-banner', bannerController.handleDeleteBanner)
+    router.delete('/api/recover-banner', bannerController.handleRecoverBanner)
 
     //bill routes
     router.get('/api/get-all-bills', billController.handleGetAllBills)

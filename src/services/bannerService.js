@@ -6,12 +6,13 @@ let getAllBanners = (bannerId) => {
             let banners = ''
             if (bannerId === 'ALL') {
                 banners = await db.Banners.findAll({
+                    where: { deleted: 0 },
                     raw: true
                 })
             }
             if (bannerId && bannerId !== 'ALL') {
                 banners = await db.Banners.findOne({
-                    where: { id: bannerId },
+                    where: { id: bannerId, deleted: 0 },
                     raw: true
                 })
             }
@@ -21,6 +22,30 @@ let getAllBanners = (bannerId) => {
         }
     })
 }
+
+let getAllBannersDeleted = (bannerId) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            let banners = ''
+            if (bannerId === 'ALL') {
+                banners = await db.Banners.findAll({
+                    where: { deleted: 1 },
+                    raw: true
+                })
+            }
+            if (bannerId && bannerId !== 'ALL') {
+                banners = await db.Banners.findOne({
+                    where: { id: bannerId, deleted: 1 },
+                    raw: true
+                })
+            }
+            resolve(banners)
+        } catch (error) {
+            reject(error)
+        }
+    })
+}
+
 let getAllMainBanners = () => {
     return new Promise(async (resolve, reject) => {
         try {
@@ -103,24 +128,61 @@ let updateBannerData = (data) => {
 let deleteBanner = (bannerId) => {
     return new Promise(async (resolve, reject) => {
         try {
-            let banner = await db.Banners.findOne({
-                where: { id: bannerId }
-            })
-            if (!banner) {
+            if (!bannerId) {
                 resolve({
                     errCode: 2,
-                    errMessage: `The banner isn't exist!`
+                    Message: 'Missing required parameters'
                 })
             }
-            await db.Banners.destroy({
-                where: { id: bannerId }
+            let banner = await db.Banners.findOne({
+                where: { id: bannerId },
+                raw: false
             })
+            if (banner) {
+                banner.deleted = 1
+                await banner.save()
+                resolve({
+                    errCode: 0,
+                    Message: 'Delete banner successfully'
+                })
+            } else {
+                resolve({
+                    errCode: 1,
+                    errMessage: 'Delete banner failure'
+                })
+            }
+        } catch (error) {
+            reject(error)
+        }
+    })
+}
 
-            resolve({
-                errCode: 0,
-                errMessage: 'Banner has been delete!'
+let recoverBanner = (bannerId) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            if (!bannerId) {
+                resolve({
+                    errCode: 2,
+                    Message: 'Missing required parameters'
+                })
+            }
+            let banner = await db.Banners.findOne({
+                where: { id: bannerId },
+                raw: false
             })
-
+            if (banner) {
+                banner.deleted = 0
+                await banner.save()
+                resolve({
+                    errCode: 0,
+                    Message: 'Recover banner successfully'
+                })
+            } else {
+                resolve({
+                    errCode: 1,
+                    errMessage: 'Recover banner failure'
+                })
+            }
         } catch (error) {
             reject(error)
         }
@@ -129,9 +191,11 @@ let deleteBanner = (bannerId) => {
 
 module.exports = {
     getAllBanners: getAllBanners,
+    getAllBannersDeleted: getAllBannersDeleted,
     getAllMainBanners: getAllMainBanners,
     getAllSubBanners: getAllSubBanners,
     createNewBanner: createNewBanner,
     updateBannerData: updateBannerData,
     deleteBanner: deleteBanner,
+    recoverBanner: recoverBanner,
 }
