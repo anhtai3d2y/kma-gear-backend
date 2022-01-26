@@ -30,6 +30,7 @@ let getAllBrandsDeleted = (brandId) => {
             if (brandId === 'ALL') {
                 brands = await db.Brands.findAll({
                     where: { deleted: 1 },
+                    order: [['updatedAt', 'DESC']],
                     raw: true
                 })
             }

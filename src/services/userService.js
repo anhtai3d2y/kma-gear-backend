@@ -164,6 +164,7 @@ let getAllUsersDeleted = (userId) => {
                         exclude: ['password']
                     },
                     where: { roleId: 1, deleted: 1 },
+                    order: [['updatedAt', 'DESC']],
                     raw: true
                 })
             }

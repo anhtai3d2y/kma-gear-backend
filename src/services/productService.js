@@ -43,7 +43,7 @@ let getAllProductsDeleted = (productId) => {
                     include: [
                         { model: db.Brands },
                     ],
-                    order: [['updatedAt', 'ASC']],
+                    order: [['updatedAt', 'DESC']],
                     raw: true,
                     nest: true
                 })

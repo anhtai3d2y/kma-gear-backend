@@ -38,6 +38,7 @@ let getAllBillsDeleted = (billId) => {
                         { model: db.States },
                         { model: db.Users },
                     ],
+                    order: [['updatedAt', 'DESC']],
                     where: { deleted: 1 },
                     raw: true,
                     nest: true

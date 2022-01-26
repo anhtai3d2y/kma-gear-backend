@@ -30,6 +30,7 @@ let getAllBannersDeleted = (bannerId) => {
             if (bannerId === 'ALL') {
                 banners = await db.Banners.findAll({
                     where: { deleted: 1 },
+                    order: [['updatedAt', 'DESC']],
                     raw: true
                 })
             }

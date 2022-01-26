@@ -37,6 +37,7 @@ let getAllProducttypesDeleted = (producttypeId) => {
                         { model: db.Categorys },
                     ],
                     where: { deleted: 1 },
+                    order: [['updatedAt', 'DESC']],
                     raw: true,
                     nest: true
                 })
