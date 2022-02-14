@@ -19,6 +19,24 @@ let handleGetAllProducts = async (req, res) => {
     })
 }
 
+let handleSearchProducts = async (req, res) => {
+    let key = req.query.key //ALL, ID
+    if (!key) {
+        return res.status(200).json({
+            errCode: 1,
+            errMessage: 'Missing required parameters!',
+            products: []
+        })
+    }
+    let products = await productService.getSearchProducts(key)
+
+    return res.status(200).json({
+        errCode: 0,
+        errMessage: 'Ok',
+        products
+    })
+}
+
 let handleGetAllProductsDeleted = async (req, res) => {
     let id = req.query.id //ALL, ID
     if (!id) {
@@ -93,6 +111,7 @@ let handleRecoverProduct = async (req, res) => {
 module.exports = {
     handleGetAllProducts: handleGetAllProducts,
     handleGetAllProductsDeleted: handleGetAllProductsDeleted,
+    handleSearchProducts: handleSearchProducts,
     handleCreateNewProduct: handleCreateNewProduct,
     handleUpdateAmountProduct: handleUpdateAmountProduct,
     handleEditProduct: handleEditProduct,

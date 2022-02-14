@@ -1,4 +1,5 @@
 import db from "../models/index";
+const { Op } = require("sequelize");
 
 let getAllProducts = (productId) => {
     return new Promise(async (resolve, reject) => {
@@ -25,6 +26,34 @@ let getAllProducts = (productId) => {
                     nest: true
                 })
             }
+            resolve(products)
+        } catch (error) {
+            reject(error)
+        }
+    })
+}
+
+let getSearchProducts = (key) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            let products = ''
+
+            products = await db.Products.findAll({
+                where: {
+                    deleted: 0,
+                    [Op.or]: [
+                        { id: { [Op.eq]: key, } },
+                        { name: { [Op.substring]: key, } },
+                        { price: { [Op.lte]: key, } },
+                        { shortDescMarkdown: { [Op.substring]: key, } },
+                    ],
+                },
+                include: [
+                    { model: db.Brands },
+                ],
+                raw: true,
+                nest: true
+            })
             resolve(products)
         } catch (error) {
             reject(error)
@@ -238,6 +267,7 @@ let recoverProduct = (productId) => {
 module.exports = {
     getAllProducts: getAllProducts,
     getAllProductsDeleted: getAllProductsDeleted,
+    getSearchProducts: getSearchProducts,
     createNewProduct: createNewProduct,
     bulkUpdateAmountProduct: bulkUpdateAmountProduct,
     updateProductData: updateProductData,
