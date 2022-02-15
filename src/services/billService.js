@@ -1,4 +1,5 @@
 import db from "../models/index";
+const { Op } = require("sequelize");
 
 let getAllBills = (billId) => {
     return new Promise(async (resolve, reject) => {
@@ -10,7 +11,9 @@ let getAllBills = (billId) => {
                         { model: db.States },
                         { model: db.Users },
                     ],
-                    where: { deleted: 0 },
+                    where: {
+                        deleted: 0,
+                    },
                     raw: true,
                     nest: true
                 })
@@ -21,6 +24,36 @@ let getAllBills = (billId) => {
                     raw: true
                 })
             }
+            resolve(bills)
+        } catch (error) {
+            reject(error)
+        }
+    })
+}
+
+let getSearchBills = (key) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            let bills = await db.Bills.findAll({
+                include: [
+                    { model: db.States },
+                    { model: db.Users },
+                ],
+                where: {
+                    deleted: 0,
+                    [Op.or]: [
+                        { id: { [Op.eq]: key, } },
+                        { userId: { [Op.eq]: key, } },
+                        { fullName: { [Op.substring]: key, } },
+                        { email: { [Op.substring]: key, } },
+                        { phoneNumber: { [Op.substring]: key, } },
+                        { address: { [Op.substring]: key, } },
+                        { note: { [Op.substring]: key, } },
+                    ],
+                },
+                raw: true,
+                nest: true
+            })
             resolve(bills)
         } catch (error) {
             reject(error)
@@ -205,6 +238,7 @@ module.exports = {
     getAllBills: getAllBills,
     getAllBillsDeleted: getAllBillsDeleted,
     getBillByPayid: getBillByPayid,
+    getSearchBills: getSearchBills,
     createNewBill: createNewBill,
     updateBillData: updateBillData,
     deleteBill: deleteBill,

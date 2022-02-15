@@ -54,6 +54,7 @@ let initWebRoutes = (app) => {
     router.get('/api/get-all-bills', billController.handleGetAllBills)
     router.get('/api/get-all-bills-deleted', billController.handleGetAllBillsDeleted)
     router.get('/api/get-bill-by-payid', billController.handleGetBillByPayid)
+    router.get('/api/search-bills', billController.handleSearchBills)
     router.post('/api/create-new-bill', billController.handleCreateNewBill)
     router.put('/api/edit-bill', billController.handleEditBill)
     router.delete('/api/delete-bill', billController.handleDeleteBill)
