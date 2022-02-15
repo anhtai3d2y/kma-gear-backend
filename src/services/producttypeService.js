@@ -1,4 +1,6 @@
 import db from "../models/index";
+const { Op } = require("sequelize");
+
 
 let getAllProducttypes = (producttypeId) => {
     return new Promise(async (resolve, reject) => {
@@ -20,6 +22,30 @@ let getAllProducttypes = (producttypeId) => {
                     raw: true
                 })
             }
+            resolve(producttypes)
+        } catch (error) {
+            reject(error)
+        }
+    })
+}
+
+let getSearchProducttypes = (key) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            let producttypes = await db.Producttypes.findAll({
+                include: [
+                    { model: db.Categorys },
+                ],
+                where: {
+                    deleted: 0,
+                    [Op.or]: [
+                        { id: { [Op.eq]: key, } },
+                        { typeName: { [Op.substring]: key, } },
+                    ],
+                },
+                raw: true,
+                nest: true
+            })
             resolve(producttypes)
         } catch (error) {
             reject(error)
@@ -171,6 +197,7 @@ let recoverProducttype = (producttypeId) => {
 module.exports = {
     getAllProducttypes: getAllProducttypes,
     getAllProducttypesDeleted: getAllProducttypesDeleted,
+    getSearchProducttypes: getSearchProducttypes,
     createNewProducttype: createNewProducttype,
     updateProducttypeData: updateProducttypeData,
     deleteProducttype: deleteProducttype,

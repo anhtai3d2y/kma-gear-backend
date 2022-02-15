@@ -19,6 +19,24 @@ let handleGetAllProducttypes = async (req, res) => {
     })
 }
 
+let handleSearchProducttypes = async (req, res) => {
+    let key = req.query.key //ALL, ID
+    if (!key) {
+        return res.status(200).json({
+            errCode: 1,
+            errMessage: 'Missing required parameters!',
+            producttypes: []
+        })
+    }
+    let producttypes = await producttypeService.getSearchProducttypes(key)
+
+    return res.status(200).json({
+        errCode: 0,
+        errMessage: 'Ok',
+        producttypes
+    })
+}
+
 let handleGetAllProducttypesDeleted = async (req, res) => {
     let id = req.query.id //ALL, ID
     if (!id) {
@@ -73,6 +91,7 @@ let handleRecoverProducttype = async (req, res) => {
 module.exports = {
     handleGetAllProducttypes: handleGetAllProducttypes,
     handleGetAllProducttypesDeleted: handleGetAllProducttypesDeleted,
+    handleSearchProducttypes: handleSearchProducttypes,
     handleCreateNewProducttype: handleCreateNewProducttype,
     handleEditProducttype: handleEditProducttype,
     handleDeleteProducttype: handleDeleteProducttype,
