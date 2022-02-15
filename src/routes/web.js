@@ -85,6 +85,7 @@ let initWebRoutes = (app) => {
     //brand routes
     router.get('/api/get-all-brands', brandController.handleGetAllBrands)
     router.get('/api/get-all-brands-deleted', brandController.handleGetAllBrandsDeleted)
+    router.get('/api/search-brands', brandController.handleSearchBrands)
     router.post('/api/create-new-brand', brandController.handleCreateNewBrand)
     router.put('/api/edit-brand', brandController.handleEditBrand)
     router.delete('/api/delete-brand', brandController.handleDeleteBrand)

@@ -19,6 +19,24 @@ let handleGetAllBrands = async (req, res) => {
     })
 }
 
+let handleSearchBrands = async (req, res) => {
+    let key = req.query.key //ALL, ID
+    if (!key) {
+        return res.status(200).json({
+            errCode: 1,
+            errMessage: 'Missing required parameters!',
+            brands: []
+        })
+    }
+    let brands = await brandService.getSearchBrands(key)
+
+    return res.status(200).json({
+        errCode: 0,
+        errMessage: 'Ok',
+        brands
+    })
+}
+
 let handleGetAllBrandsDeleted = async (req, res) => {
     let id = req.query.id //ALL, ID
     if (!id) {
@@ -73,6 +91,7 @@ let handleRecoverBrand = async (req, res) => {
 module.exports = {
     handleGetAllBrands: handleGetAllBrands,
     handleGetAllBrandsDeleted: handleGetAllBrandsDeleted,
+    handleSearchBrands: handleSearchBrands,
     handleCreateNewBrand: handleCreateNewBrand,
     handleEditBrand: handleEditBrand,
     handleDeleteBrand: handleDeleteBrand,
