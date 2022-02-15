@@ -1,5 +1,7 @@
 import db from "../models/index";
 import bcrypt from 'bcryptjs';
+const { Op } = require("sequelize");
+
 
 const salt = bcrypt.genSaltSync(10);
 
@@ -147,6 +149,33 @@ let getAllUsers = (userId) => {
                     nest: true
                 })
             }
+            resolve(users)
+        } catch (error) {
+            reject(error)
+        }
+    })
+}
+
+let getSearchUsers = (key) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            let users = await db.Users.findAll({
+                attributes: {
+                    exclude: ['password']
+                },
+                where: {
+                    roleId: 1,
+                    deleted: 0,
+                    [Op.or]: [
+                        { id: { [Op.eq]: key, } },
+                        { email: { [Op.substring]: key, } },
+                        { fullName: { [Op.substring]: key, } },
+                        { phoneNumber: { [Op.substring]: key, } },
+                        { address: { [Op.substring]: key, } },
+                    ],
+                },
+                raw: true
+            })
             resolve(users)
         } catch (error) {
             reject(error)
@@ -329,6 +358,7 @@ module.exports = {
     checkUserEmail: checkUserEmail,
     getAllUsers: getAllUsers,
     getAllUsersDeleted: getAllUsersDeleted,
+    getSearchUsers: getSearchUsers,
     createNewUser: createNewUser,
     updateUserData: updateUserData,
     deleteUser: deleteUser,
