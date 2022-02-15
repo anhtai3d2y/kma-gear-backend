@@ -19,6 +19,24 @@ let handleGetAllCategorys = async (req, res) => {
     })
 }
 
+let handleSearchCategorys = async (req, res) => {
+    let key = req.query.key //ALL, ID
+    if (!key) {
+        return res.status(200).json({
+            errCode: 1,
+            errMessage: 'Missing required parameters!',
+            categorys: []
+        })
+    }
+    let categorys = await categoryService.getSearchCategorys(key)
+
+    return res.status(200).json({
+        errCode: 0,
+        errMessage: 'Ok',
+        categorys
+    })
+}
+
 let handleGetAllCategorysDeleted = async (req, res) => {
     let id = req.query.id //ALL, ID
     if (!id) {
@@ -73,6 +91,7 @@ let handleRecoverCategory = async (req, res) => {
 module.exports = {
     handleGetAllCategorys: handleGetAllCategorys,
     handleGetAllCategorysDeleted: handleGetAllCategorysDeleted,
+    handleSearchCategorys: handleSearchCategorys,
     handleCreateNewCategory: handleCreateNewCategory,
     handleEditCategory: handleEditCategory,
     handleDeleteCategory: handleDeleteCategory,

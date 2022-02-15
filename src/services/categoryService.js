@@ -1,4 +1,5 @@
 import db from "../models/index";
+const { Op } = require("sequelize");
 
 let getAllCategorys = (categoryId) => {
     return new Promise(async (resolve, reject) => {
@@ -16,6 +17,26 @@ let getAllCategorys = (categoryId) => {
                     raw: true
                 })
             }
+            resolve(categorys)
+        } catch (error) {
+            reject(error)
+        }
+    })
+}
+
+let getSearchCategorys = (key) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            let categorys = await db.Categorys.findAll({
+                where: {
+                    deleted: 0,
+                    [Op.or]: [
+                        { id: { [Op.eq]: key, } },
+                        { name: { [Op.substring]: key, } },
+                    ],
+                },
+                raw: true
+            })
             resolve(categorys)
         } catch (error) {
             reject(error)
@@ -164,6 +185,7 @@ let recoverCategory = (categoryId) => {
 module.exports = {
     getAllCategorys: getAllCategorys,
     getAllCategorysDeleted: getAllCategorysDeleted,
+    getSearchCategorys: getSearchCategorys,
     createNewCategory: createNewCategory,
     updateCategoryData: updateCategoryData,
     deleteCategory: deleteCategory,
