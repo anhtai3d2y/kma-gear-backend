@@ -33,6 +33,27 @@ let getAllProducts = (productId) => {
     })
 }
 
+let getProductsByType = (id) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            let products = await db.Products.findAll({
+                where: {
+                    deleted: 0,
+                    typeId: id,
+                },
+                include: [
+                    { model: db.Brands },
+                ],
+                raw: true,
+                nest: true
+            })
+            resolve(products)
+        } catch (error) {
+            reject(error)
+        }
+    })
+}
+
 let getSearchProducts = (key) => {
     return new Promise(async (resolve, reject) => {
         try {
@@ -266,6 +287,7 @@ let recoverProduct = (productId) => {
 
 module.exports = {
     getAllProducts: getAllProducts,
+    getProductsByType: getProductsByType,
     getAllProductsDeleted: getAllProductsDeleted,
     getSearchProducts: getSearchProducts,
     createNewProduct: createNewProduct,
