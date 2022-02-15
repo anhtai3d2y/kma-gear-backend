@@ -1,4 +1,5 @@
 import db from "../models/index";
+const { Op } = require("sequelize");
 
 let getAllBanners = (bannerId) => {
     return new Promise(async (resolve, reject) => {
@@ -16,6 +17,27 @@ let getAllBanners = (bannerId) => {
                     raw: true
                 })
             }
+            resolve(banners)
+        } catch (error) {
+            reject(error)
+        }
+    })
+}
+
+let getSearchBanners = (key) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            let banners = await db.Banners.findAll({
+                where: {
+                    deleted: 0,
+                    [Op.or]: [
+                        { id: { [Op.eq]: key, } },
+                        { type: { [Op.eq]: key, } },
+                        { link: { [Op.substring]: key, } },
+                    ],
+                },
+                raw: true
+            })
             resolve(banners)
         } catch (error) {
             reject(error)
@@ -195,6 +217,7 @@ module.exports = {
     getAllBannersDeleted: getAllBannersDeleted,
     getAllMainBanners: getAllMainBanners,
     getAllSubBanners: getAllSubBanners,
+    getSearchBanners: getSearchBanners,
     createNewBanner: createNewBanner,
     updateBannerData: updateBannerData,
     deleteBanner: deleteBanner,

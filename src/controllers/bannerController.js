@@ -19,6 +19,24 @@ let handleGetAllBanners = async (req, res) => {
     })
 }
 
+let handleSearchBanners = async (req, res) => {
+    let key = req.query.key //ALL, ID
+    if (!key) {
+        return res.status(200).json({
+            errCode: 1,
+            errMessage: 'Missing required parameters!',
+            banners: []
+        })
+    }
+    let banners = await bannerService.getSearchBanners(key)
+
+    return res.status(200).json({
+        errCode: 0,
+        errMessage: 'Ok',
+        banners
+    })
+}
+
 let handleGetAllBannersDeleted = async (req, res) => {
     let id = req.query.id //ALL, ID
     if (!id) {
@@ -92,6 +110,7 @@ module.exports = {
     handleGetAllBannersDeleted: handleGetAllBannersDeleted,
     handleGetAllMainBanners: handleGetAllMainBanners,
     handleGetAllSubBanners: handleGetAllSubBanners,
+    handleSearchBanners: handleSearchBanners,
     handleCreateNewBanner: handleCreateNewBanner,
     handleEditBanner: handleEditBanner,
     handleDeleteBanner: handleDeleteBanner,
