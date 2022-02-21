@@ -1,19 +1,20 @@
 import db from "../models/index";
 const { Op } = require("sequelize");
 
-let getAllBrands = (brandId) => {
+let getAllBrands = (BrandId) => {
     return new Promise(async (resolve, reject) => {
         try {
             let brands = ''
-            if (brandId === 'ALL') {
+            if (BrandId === 'ALL') {
                 brands = await db.Brands.findAll({
                     where: { deleted: 0 },
+                    order: [['id', 'DESC']],
                     raw: true
                 })
             }
-            if (brandId && brandId !== 'ALL') {
+            if (BrandId && BrandId !== 'ALL') {
                 brands = await db.Brands.findOne({
-                    where: { id: brandId, deleted: 0 },
+                    where: { id: BrandId, deleted: 0 },
                     raw: true
                 })
             }
@@ -27,11 +28,15 @@ let getAllBrands = (brandId) => {
 let getSearchBrands = (key) => {
     return new Promise(async (resolve, reject) => {
         try {
+            let id = Number(key)
+            if (!id) {
+                id = 0
+            }
             let brands = await db.Brands.findAll({
                 where: {
                     deleted: 0,
                     [Op.or]: [
-                        { id: { [Op.eq]: key, } },
+                        { id: { [Op.eq]: id, } },
                         { name: { [Op.substring]: key, } },
                     ],
                 },
@@ -44,20 +49,20 @@ let getSearchBrands = (key) => {
     })
 }
 
-let getAllBrandsDeleted = (brandId) => {
+let getAllBrandsDeleted = (BrandId) => {
     return new Promise(async (resolve, reject) => {
         try {
             let brands = ''
-            if (brandId === 'ALL') {
+            if (BrandId === 'ALL') {
                 brands = await db.Brands.findAll({
                     where: { deleted: 1 },
                     order: [['updatedAt', 'DESC']],
                     raw: true
                 })
             }
-            if (brandId && brandId !== 'ALL') {
+            if (BrandId && BrandId !== 'ALL') {
                 brands = await db.Brands.findOne({
-                    where: { id: brandId, deleted: 1 },
+                    where: { id: BrandId, deleted: 1 },
                     raw: true
                 })
             }
@@ -74,6 +79,7 @@ let createNewBrand = (data) => {
             await db.Brands.create({
                 name: data.name,
                 image: data.image,
+                deleted: '0'
             })
             resolve({
                 errCode: 0,
@@ -118,17 +124,17 @@ let updateBrandData = (data) => {
     })
 }
 
-let deleteBrand = (brandId) => {
+let deleteBrand = (BrandId) => {
     return new Promise(async (resolve, reject) => {
         try {
-            if (!brandId) {
+            if (!BrandId) {
                 resolve({
                     errCode: 2,
                     Message: 'Missing required parameters'
                 })
             }
             let brand = await db.Brands.findOne({
-                where: { id: brandId },
+                where: { id: BrandId },
                 raw: false
             })
             if (brand) {
@@ -150,17 +156,17 @@ let deleteBrand = (brandId) => {
     })
 }
 
-let recoverBrand = (brandId) => {
+let recoverBrand = (BrandId) => {
     return new Promise(async (resolve, reject) => {
         try {
-            if (!brandId) {
+            if (!BrandId) {
                 resolve({
                     errCode: 2,
                     Message: 'Missing required parameters'
                 })
             }
             let brand = await db.Brands.findOne({
-                where: { id: brandId },
+                where: { id: BrandId },
                 raw: false
             })
             if (brand) {

@@ -1,24 +1,25 @@
 import db from "../models/index";
 const { Op } = require("sequelize");
 
-let getAllProducts = (productId) => {
+let getAllProducts = (ProductId) => {
     return new Promise(async (resolve, reject) => {
         try {
             let products = ''
 
-            if (productId === 'ALL') {
+            if (ProductId === 'ALL') {
                 products = await db.Products.findAll({
                     where: { deleted: 0 },
                     include: [
                         { model: db.Brands },
                     ],
+                    order: [['id', 'ASC']],
                     raw: true,
                     nest: true
                 })
             }
-            if (productId && productId !== 'ALL') {
+            if (ProductId && ProductId !== 'ALL') {
                 products = await db.Products.findOne({
-                    where: { id: productId, deleted: 0 },
+                    where: { id: ProductId, deleted: 0 },
                     include: [
                         { model: db.Brands },
                     ],
@@ -39,7 +40,7 @@ let getProductsByType = (id) => {
             let products = await db.Products.findAll({
                 where: {
                     deleted: 0,
-                    typeId: id,
+                    TypeId: id,
                 },
                 include: [
                     { model: db.Brands },
@@ -58,15 +59,21 @@ let getSearchProducts = (key) => {
     return new Promise(async (resolve, reject) => {
         try {
             let products = ''
-
+            let id = Number(key)
+            if (!id) {
+                id = 0
+            }
             products = await db.Products.findAll({
                 where: {
                     deleted: 0,
+                    // name: {
+                    //     [Op.substring]: key,
+                    // }
                     [Op.or]: [
-                        { id: { [Op.eq]: key, } },
-                        { name: { [Op.substring]: key, } },
-                        { price: { [Op.lte]: key, } },
-                        { shortDescMarkdown: { [Op.substring]: key, } },
+                        { id: { [Op.eq]: id, } },
+                        { name: { [Op.substring]: key } },
+                        { price: { [Op.lte]: id } },
+                        { shortDescMarkdown: { [Op.substring]: key } },
                     ],
                 },
                 include: [
@@ -82,12 +89,12 @@ let getSearchProducts = (key) => {
     })
 }
 
-let getAllProductsDeleted = (productId) => {
+let getAllProductsDeleted = (ProductId) => {
     return new Promise(async (resolve, reject) => {
         try {
             let products = ''
 
-            if (productId === 'ALL') {
+            if (ProductId === 'ALL') {
                 products = await db.Products.findAll({
                     where: { deleted: 1 },
                     include: [
@@ -98,9 +105,9 @@ let getAllProductsDeleted = (productId) => {
                     nest: true
                 })
             }
-            if (productId && productId !== 'ALL') {
+            if (ProductId && ProductId !== 'ALL') {
                 products = await db.Products.findOne({
-                    where: { id: productId, deleted: 1 },
+                    where: { id: ProductId, deleted: 1 },
                     include: [
                         { model: db.Brands },
                     ],
@@ -140,8 +147,8 @@ let createNewProduct = (data) => {
         try {
             await db.Products.create({
                 name: data.name,
-                brandId: data.brandId,
-                typeId: data.typeId,
+                BrandId: data.BrandId,
+                TypeId: data.TypeId,
                 amount: data.amount,
                 price: data.price,
                 discount: data.discount,
@@ -150,7 +157,7 @@ let createNewProduct = (data) => {
                 shortDescMarkdown: data.shortDescMarkdown,
                 descriptionHTML: data.descriptionHTML,
                 descriptionMarkdown: data.descriptionMarkdown,
-                deleted: 0,
+                deleted: '0',
             })
             resolve({
                 errCode: 0,
@@ -182,7 +189,7 @@ let bulkUpdateAmountProduct = (data) => {
 let updateProductData = (data) => {
     return new Promise(async (resolve, reject) => {
         try {
-            if (!data.id || !data.typeId || !data.brandId) {
+            if (!data.id || !data.TypeId || !data.BrandId) {
                 resolve({
                     errCode: 2,
                     Message: 'Missing required parameters'
@@ -194,8 +201,8 @@ let updateProductData = (data) => {
             })
             if (product) {
                 product.name = data.name
-                product.brandId = data.brandId
-                product.typeId = data.typeId
+                product.BrandId = data.BrandId
+                product.TypeId = data.TypeId
                 product.amount = data.amount
                 product.price = data.price
                 product.discount = data.discount
@@ -221,17 +228,17 @@ let updateProductData = (data) => {
     })
 }
 
-let deleteProduct = (productId) => {
+let deleteProduct = (ProductId) => {
     return new Promise(async (resolve, reject) => {
         try {
-            if (!productId) {
+            if (!ProductId) {
                 resolve({
                     errCode: 2,
                     Message: 'Missing required parameters'
                 })
             }
             let product = await db.Products.findOne({
-                where: { id: productId },
+                where: { id: ProductId },
                 raw: false
             })
             if (product) {
@@ -253,17 +260,17 @@ let deleteProduct = (productId) => {
     })
 }
 
-let recoverProduct = (productId) => {
+let recoverProduct = (ProductId) => {
     return new Promise(async (resolve, reject) => {
         try {
-            if (!productId) {
+            if (!ProductId) {
                 resolve({
                     errCode: 2,
                     Message: 'Missing required parameters'
                 })
             }
             let product = await db.Products.findOne({
-                where: { id: productId },
+                where: { id: ProductId },
                 raw: false
             })
             if (product) {

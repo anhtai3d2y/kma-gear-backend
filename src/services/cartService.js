@@ -1,10 +1,10 @@
 import db from "../models/index";
 
-let getAllCarts = (cartId) => {
+let getAllCarts = (CartId) => {
     return new Promise(async (resolve, reject) => {
         try {
             let carts = ''
-            if (cartId === 'ALL') {
+            if (CartId === 'ALL') {
                 carts = await db.Carts.findAll({
                     include: [
                         { model: db.Users },
@@ -13,14 +13,14 @@ let getAllCarts = (cartId) => {
                     nest: true
                 })
             }
-            if (cartId && cartId !== 'ALL') {
+            if (CartId && CartId !== 'ALL') {
                 carts = await db.Carts.findOne({
-                    where: { userId: cartId },
+                    where: { UserId: CartId },
                     raw: true
                 })
                 if (carts === null) {
                     let user = await db.Users.findOne({
-                        where: { id: cartId, roleId: '1' },
+                        where: { id: CartId, roleId: '1' },
                         attributes: {
                             exclude: ['password']
                         },
@@ -29,16 +29,16 @@ let getAllCarts = (cartId) => {
                     })
                     if (user !== null) {
                         await db.Carts.create({
-                            userId: user.id,
+                            UserId: user.id,
                             fullName: user.fullName,
                             email: user.email,
                             phoneNumber: user.phoneNumber,
                             address: user.address,
-                            paymentTypeId: 1,
+                            PaymenttypeId: 1,
                         })
                     }
                     carts = await db.Carts.findOne({
-                        where: { userId: cartId },
+                        where: { UserId: CartId },
                         raw: true
                     })
                 }
@@ -54,13 +54,13 @@ let createNewCart = (data) => {
     return new Promise(async (resolve, reject) => {
         try {
             await db.Carts.create({
-                userId: data.userId,
+                UserId: data.UserId,
                 fullName: data.fullName,
                 email: data.email,
                 phoneNumber: data.phoneNumber,
                 address: data.address,
                 note: data.note,
-                paymentTypeId: data.paymentTypeId,
+                PaymenttypeId: data.PaymenttypeId,
             })
             resolve({
                 errCode: 0,
@@ -86,13 +86,13 @@ let updateCartData = (data) => {
                 raw: false
             })
             if (cart) {
-                cart.userId = data.userId
+                cart.UserId = data.UserId
                 cart.fullName = data.fullName
                 cart.email = data.email
                 cart.phoneNumber = data.phoneNumber
                 cart.address = data.address
                 cart.note = data.note
-                cart.paymentTypeId = data.paymentTypeId
+                cart.PaymenttypeId = data.PaymenttypeId
                 await cart.save()
                 resolve({
                     errCode: 0,
@@ -110,11 +110,11 @@ let updateCartData = (data) => {
     })
 }
 
-let deleteCart = (cartId) => {
+let deleteCart = (CartId) => {
     return new Promise(async (resolve, reject) => {
         try {
             let cart = await db.Carts.findOne({
-                where: { id: cartId }
+                where: { id: CartId }
             })
             if (!cart) {
                 resolve({
@@ -123,7 +123,7 @@ let deleteCart = (cartId) => {
                 })
             }
             await db.Carts.destroy({
-                where: { id: cartId }
+                where: { id: CartId }
             })
 
             resolve({

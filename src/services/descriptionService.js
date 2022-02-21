@@ -26,7 +26,7 @@ let createNewDescription = (data) => {
     return new Promise(async (resolve, reject) => {
         try {
             await db.Descriptions.create({
-                productId: data.productId,
+                ProductId: data.ProductId,
                 content: data.content,
             })
             resolve({
@@ -53,7 +53,7 @@ let updateDescriptionData = (data) => {
                 raw: false
             })
             if (description) {
-                description.productId = data.productId
+                description.ProductId = data.ProductId
                 description.content = data.content
                 await description.save()
                 resolve({

@@ -14,6 +14,7 @@ let getAllBills = (billId) => {
                     where: {
                         deleted: 0,
                     },
+                    order: [['createdAt', 'ASC']],
                     raw: true,
                     nest: true
                 })
@@ -34,16 +35,21 @@ let getAllBills = (billId) => {
 let getSearchBills = (key) => {
     return new Promise(async (resolve, reject) => {
         try {
+            let id = Number(key)
+            if (!id) {
+                id = 0
+            }
             let bills = await db.Bills.findAll({
                 include: [
                     { model: db.States },
                     { model: db.Users },
                 ],
+                order: [['createdAt', 'DESC']],
                 where: {
                     deleted: 0,
                     [Op.or]: [
-                        { id: { [Op.eq]: key, } },
-                        { userId: { [Op.eq]: key, } },
+                        { id: { [Op.eq]: id, } },
+                        { UserId: { [Op.eq]: id, } },
                         { fullName: { [Op.substring]: key, } },
                         { email: { [Op.substring]: key, } },
                         { phoneNumber: { [Op.substring]: key, } },
@@ -108,17 +114,23 @@ let getBillByPayid = (payId) => {
 let createNewBill = (data) => {
     return new Promise(async (resolve, reject) => {
         try {
+            // let b = await db.Bills.findOne({
+            //     order: [['id', 'DESC']],
+            //     raw: true
+            // })
             let bill = await db.Bills.create({
-                userId: data.userId,
+                // id: b.id + 1,
+                UserId: data.UserId,
                 fullName: data.fullName,
                 email: data.email,
                 phoneNumber: data.phoneNumber,
                 address: data.address,
                 note: data.note,
-                stateId: data.stateId,
-                paymentTypeId: data.paymentTypeId,
+                StateId: data.StateId,
+                PaymenttypeId: data.PaymenttypeId,
                 payId: data.payId,
-                totalPrice: data.totalPrice
+                totalPrice: data.totalPrice,
+                deleted: '0',
             })
             resolve({
                 errCode: 0,
@@ -145,14 +157,14 @@ let updateBillData = (data) => {
                 raw: false
             })
             if (bill) {
-                bill.userId = data.userId
+                bill.UserId = data.UserId
                 bill.fullName = data.fullName
                 bill.email = data.email
                 bill.phoneNumber = data.phoneNumber
                 bill.address = data.address
                 bill.note = data.note
-                bill.stateId = data.stateId
-                bill.paymentTypeId = data.paymentTypeId
+                bill.StateId = data.StateId
+                bill.PaymenttypeId = data.PaymenttypeId
                 await bill.save()
                 resolve({
                     errCode: 0,

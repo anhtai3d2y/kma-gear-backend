@@ -1,5 +1,6 @@
 import db from "../models/index";
 import billService from "../services/billService";
+require('dotenv').config()
 
 const paypal = require('paypal-rest-sdk');
 
@@ -16,8 +17,8 @@ let payWithPaypal = (req, res) => {
             "payment_method": "paypal"
         },
         "redirect_urls": {
-            "return_url": "http://localhost:8080/api/paypal-success",
-            "cancel_url": "http://localhost:8080/api/paypal-cancel"
+            "return_url": `${process.env.REACT_APP_BACKEND_URL}/api/paypal-success`,
+            "cancel_url": `${process.env.REACT_APP_BACKEND_URL}/api/paypal-cancel`
         },
         "transactions": [{
             "item_list": {
@@ -68,7 +69,7 @@ let paypalSuccess = async (req, res) => {
         } else {
             let data = {
                 ...bill,
-                paymentTypeId: 2
+                PaymenttypeId: 2
             }
             let message = billService.updateBillData(data)
             // console.log("Get Payment Response");

@@ -12,6 +12,7 @@ let getAllProducttypes = (producttypeId) => {
                         { model: db.Categorys },
                     ],
                     where: { deleted: 0 },
+                    order: [['id', 'ASC']],
                     raw: true,
                     nest: true
                 })
@@ -32,6 +33,10 @@ let getAllProducttypes = (producttypeId) => {
 let getSearchProducttypes = (key) => {
     return new Promise(async (resolve, reject) => {
         try {
+            let id = Number(key)
+            if (!id) {
+                id = 0
+            }
             let producttypes = await db.Producttypes.findAll({
                 include: [
                     { model: db.Categorys },
@@ -39,7 +44,7 @@ let getSearchProducttypes = (key) => {
                 where: {
                     deleted: 0,
                     [Op.or]: [
-                        { id: { [Op.eq]: key, } },
+                        { id: { [Op.eq]: id, } },
                         { typeName: { [Op.substring]: key, } },
                     ],
                 },
@@ -86,7 +91,8 @@ let createNewProducttype = (data) => {
         try {
             await db.Producttypes.create({
                 typeName: data.typeName,
-                categoryId: data.categoryId,
+                CategoryId: data.CategoryId,
+                deleted: '0',
             })
             resolve({
                 errCode: 0,
@@ -113,7 +119,7 @@ let updateProducttypeData = (data) => {
             })
             if (producttype) {
                 producttype.typeName = data.typeName
-                producttype.categoryId = data.categoryId
+                producttype.CategoryId = data.CategoryId
                 await producttype.save()
                 resolve({
                     errCode: 0,

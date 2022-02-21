@@ -1,23 +1,23 @@
 'use strict';
 module.exports = {
     up: async (queryInterface, Sequelize) => {
-        await queryInterface.addConstraint('Products', {
-            fields: ['TypeId'],
+        await queryInterface.addConstraint('Invoicedetails', {
+            fields: ['BillId'],
             type: 'foreign key',
-            name: 'product-productype-association',
+            name: 'invoicedetail-bill-association',
             references: {
-                table: 'Producttypes',
+                table: 'Bills',
                 field: 'id'
             }
         });
     },
     down: async (queryInterface, Sequelize) => {
-        await queryInterface.removeConstraint('Products', {
-            fields: ['TypeId'],
+        await queryInterface.removeConstraint('Invoicedetails', {
+            fields: ['BillId'],
             type: 'foreign key',
-            name: 'product-productype-association',
+            name: 'invoicedetail-bill-association',
             references: {
-                table: 'Producttypes',
+                table: 'Bills',
                 field: 'id'
             }
         });

@@ -11,7 +11,7 @@ let getAllCartdetails = (cartdetailId) => {
             }
             if (cartdetailId && cartdetailId !== 'ALL') {
                 cartdetails = await db.Cartdetails.findAll({
-                    where: { cartId: cartdetailId },
+                    where: { CartId: cartdetailId },
                     include: [
                         { model: db.Products },
                     ],
@@ -30,8 +30,8 @@ let createNewCartdetail = (data) => {
     return new Promise(async (resolve, reject) => {
         try {
             await db.Cartdetails.create({
-                cartId: data.cartId,
-                productId: data.productId,
+                CartId: data.CartId,
+                ProductId: data.ProductId,
                 price: data.price,
                 amount: data.amount,
                 discount: data.discount,
@@ -60,8 +60,8 @@ let updateCartdetailData = (data) => {
                 raw: false
             })
             if (cartdetail) {
-                cartdetail.cartId = data.cartId
-                cartdetail.productId = data.productId
+                cartdetail.CartId = data.CartId
+                cartdetail.ProductId = data.ProductId
                 cartdetail.price = data.price
                 cartdetail.amount = data.amount
                 cartdetail.discount = data.discount
@@ -109,11 +109,11 @@ let deleteCartdetail = (cartdetailId) => {
     })
 }
 
-let clearCartdetail = (cartId) => {
+let clearCartdetail = (CartId) => {
     return new Promise(async (resolve, reject) => {
         try {
             let cartdetails = await db.Cartdetails.findAll({
-                where: { cartId: cartId }
+                where: { CartId: CartId }
             })
             if (!cartdetails) {
                 resolve({
@@ -122,7 +122,7 @@ let clearCartdetail = (cartId) => {
                 })
             }
             await db.Cartdetails.destroy({
-                where: { cartId: cartId }
+                where: { CartId: CartId }
             })
 
             resolve({

@@ -8,6 +8,7 @@ let getAllCategorys = (categoryId) => {
             if (categoryId === 'ALL') {
                 categorys = await db.Categorys.findAll({
                     where: { deleted: 0 },
+                    order: [['id', 'ASC']],
                     raw: true
                 })
             }
@@ -27,11 +28,16 @@ let getAllCategorys = (categoryId) => {
 let getSearchCategorys = (key) => {
     return new Promise(async (resolve, reject) => {
         try {
+            // console.log(parseInt(key))
+            let id = Number(key)
+            if (!id) {
+                id = 0
+            }
             let categorys = await db.Categorys.findAll({
                 where: {
                     deleted: 0,
                     [Op.or]: [
-                        { id: { [Op.eq]: key, } },
+                        { id: { [Op.eq]: id, } },
                         { name: { [Op.substring]: key, } },
                     ],
                 },
@@ -74,6 +80,7 @@ let createNewCategory = (data) => {
             await db.Categorys.create({
                 name: data.name,
                 image: data.image,
+                deleted: '0',
             })
             resolve({
                 errCode: 0,

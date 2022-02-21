@@ -8,6 +8,7 @@ let getAllBanners = (bannerId) => {
             if (bannerId === 'ALL') {
                 banners = await db.Banners.findAll({
                     where: { deleted: 0 },
+                    order: [['id', 'DESC']],
                     raw: true
                 })
             }
@@ -27,12 +28,16 @@ let getAllBanners = (bannerId) => {
 let getSearchBanners = (key) => {
     return new Promise(async (resolve, reject) => {
         try {
+            let id = Number(key)
+            if (!id) {
+                id = 0
+            }
             let banners = await db.Banners.findAll({
                 where: {
                     deleted: 0,
                     [Op.or]: [
-                        { id: { [Op.eq]: key, } },
-                        { type: { [Op.eq]: key, } },
+                        { id: { [Op.eq]: id, } },
+                        { type: { [Op.eq]: id, } },
                         { link: { [Op.substring]: key, } },
                     ],
                 },
@@ -103,6 +108,7 @@ let createNewBanner = (data) => {
                 link: data.link,
                 image: data.image,
                 type: data.type,
+                deleted: '0',
             })
             resolve({
                 errCode: 0,

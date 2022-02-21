@@ -1,7 +1,7 @@
 'use strict';
 module.exports = {
     up: async (queryInterface, Sequelize) => {
-        await queryInterface.createTable('categorys', {
+        await queryInterface.createTable('Categorys', {
             // name: DataTypes.STRING,
             // image: DataTypes.STRING,
             // deleted: DataTypes.INTEGER,
@@ -31,6 +31,6 @@ module.exports = {
         });
     },
     down: async (queryInterface, Sequelize) => {
-        await queryInterface.dropTable('categorys');
+        await queryInterface.dropTable('Categorys');
     }
 };

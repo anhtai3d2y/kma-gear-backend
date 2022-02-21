@@ -32,9 +32,9 @@ let displayGetCRUD = async (req, res) => {
 }
 
 let getEditCRUD = async (req, res) => {
-    let userId = req.query.id
-    if (userId) {
-        let userData = await CRUDService.getUserById(userId)
+    let UserId = req.query.id
+    if (UserId) {
+        let userData = await CRUDService.getUserById(UserId)
         if (userData) {
             return res.render('editCRUD.ejs', {
                 userData: userData

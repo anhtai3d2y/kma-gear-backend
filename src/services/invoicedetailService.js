@@ -29,12 +29,18 @@ let getAllInvoicedetails = (invoicedetailId) => {
 let createNewInvoicedetail = (data) => {
     return new Promise(async (resolve, reject) => {
         try {
+            let invoicedetail = await db.Invoicedetails.findOne({
+                order: [['id', 'DESC']],
+                raw: true
+            })
             await db.Invoicedetails.create({
+                id: invoicedetail.id + 1,
                 billId: data.billId,
-                productId: data.productId,
+                ProductId: data.ProductId,
                 price: data.price,
                 amount: data.amount,
                 discount: data.discount,
+                deleted: '0',
             })
             resolve({
                 errCode: 0,
@@ -75,7 +81,7 @@ let updateInvoicedetailData = (data) => {
             })
             if (invoicedetail) {
                 invoicedetail.billId = data.billId
-                invoicedetail.productId = data.productId
+                invoicedetail.ProductId = data.ProductId
                 invoicedetail.price = data.price
                 invoicedetail.amount = data.amount
                 invoicedetail.discount = data.discount

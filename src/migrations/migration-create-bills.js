@@ -1,15 +1,15 @@
 'use strict';
 module.exports = {
     up: async (queryInterface, Sequelize) => {
-        await queryInterface.createTable('bills', {
-            // userId: DataTypes.INTEGER,
+        await queryInterface.createTable('Bills', {
+            // UserId: DataTypes.INTEGER,
             // fullName: DataTypes.STRING,
             // email: DataTypes.STRING,
             // phoneNumber: DataTypes.STRING,
             // address: DataTypes.STRING,
             // note: DataTypes.TEXT,
             // statusId: DataTypes.INTEGER,
-            // paymentTypeId: DataTypes.INTEGER,
+            // PaymenttypeId: DataTypes.INTEGER,
             // payId: data.payId,
             // totalPrice: data.totalPrice,
             // deleted: DataTypes.INTEGER,
@@ -20,7 +20,7 @@ module.exports = {
                 primaryKey: true,
                 type: Sequelize.INTEGER
             },
-            userId: {
+            UserId: {
                 allowNull: true,
                 type: Sequelize.INTEGER
             },
@@ -39,10 +39,10 @@ module.exports = {
             note: {
                 type: Sequelize.TEXT
             },
-            stateId: {
+            StateId: {
                 type: Sequelize.INTEGER
             },
-            paymentTypeId: {
+            PaymenttypeId: {
                 type: Sequelize.INTEGER
             },
             payId: {
@@ -65,6 +65,6 @@ module.exports = {
         });
     },
     down: async (queryInterface, Sequelize) => {
-        await queryInterface.dropTable('bills');
+        await queryInterface.dropTable('Bills');
     }
 };

@@ -1,15 +1,21 @@
 {
   "development": {
-    "username": "root",
-    "password": null,
-    "database": "kma_gear",
-    "host": "127.0.0.1",
-    "dialect": "mysql",
+    "username": "fgqrswlxrvckhs",
+    "password": "c195e4538d7a063eb89cdfa6ab2e23f565d438eb704b0d222ec7788418930624",
+    "database": "d8ucdkatdbt4nk",
+    "host": "ec2-3-221-100-217.compute-1.amazonaws.com",
+    "dialect": "postgres",
     "logging": false,
     "query":{
       "raw": true
     },
-    "timezone": "+07:00"
+    "timezone": "+07:00",
+    "dialectOptions":{
+      "ssl":{
+        "require": true,
+        "rejectUnauthorized": false
+      }
+    }
   },
   "test": {
     "username": "root",
