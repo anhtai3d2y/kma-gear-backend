@@ -19,6 +19,24 @@ let handleGetAllInvoicedetails = async (req, res) => {
     })
 }
 
+let handleGetAllInvoicedetailsByBill = async (req, res) => {
+    let id = req.query.id //ALL, ID
+    if (!id) {
+        return res.status(200).json({
+            errCode: 1,
+            errMessage: 'Missing required parameters!',
+            invoicedetails: []
+        })
+    }
+    let invoicedetails = await invoicedetailService.getAllInvoicedetailsByBill(id)
+
+    return res.status(200).json({
+        errCode: 0,
+        errMessage: 'Ok',
+        invoicedetails
+    })
+}
+
 let handleCreateNewInvoicedetail = async (req, res) => {
     let message = await invoicedetailService.createNewInvoicedetail(req.body)
     return res.status(200).json(message)
@@ -48,6 +66,7 @@ let handleDeleteInvoicedetail = async (req, res) => {
 
 module.exports = {
     handleGetAllInvoicedetails: handleGetAllInvoicedetails,
+    handleGetAllInvoicedetailsByBill: handleGetAllInvoicedetailsByBill,
     handleCreateNewInvoicedetail: handleCreateNewInvoicedetail,
     handleBulkCreateInvoicedetail: handleBulkCreateInvoicedetail,
     handleEditInvoicedetail: handleEditInvoicedetail,

@@ -36,6 +36,7 @@ let initWebRoutes = (app) => {
     router.get('/api/search-users', userController.handleSearchUsers)
     router.post('/api/create-new-user', userController.handleCreateNewUser)
     router.put('/api/edit-user', userController.handleEditUser)
+    router.put('/api/change-user-password', userController.handleEditUserPassword)
     router.delete('/api/delete-user', userController.handleDeleteUser)
     router.delete('/api/recover-user', userController.handleRecoverUser)
 
@@ -53,6 +54,7 @@ let initWebRoutes = (app) => {
 
     //bill routes
     router.get('/api/get-all-bills', billController.handleGetAllBills)
+    router.get('/api/get-all-bills-by-customer', billController.handleGetAllBillsByCustomer)
     router.get('/api/get-all-bills-deleted', billController.handleGetAllBillsDeleted)
     router.get('/api/get-bill-by-payid', billController.handleGetBillByPayid)
     router.get('/api/search-bills', billController.handleSearchBills)
@@ -122,6 +124,7 @@ let initWebRoutes = (app) => {
 
     //invoicedetail routes
     router.get('/api/get-all-invoicedetails', invoicedetailController.handleGetAllInvoicedetails)
+    router.get('/api/get-all-invoicedetails-by-bill', invoicedetailController.handleGetAllInvoicedetailsByBill)
     router.post('/api/create-new-invoicedetail', invoicedetailController.handleCreateNewInvoicedetail)
     router.put('/api/edit-invoicedetail', invoicedetailController.handleEditInvoicedetail)
     router.delete('/api/delete-invoicedetail', invoicedetailController.handleDeleteInvoicedetail)

@@ -74,7 +74,7 @@ let paypalSuccess = async (req, res) => {
             let message = billService.updateBillData(data)
             // console.log("Get Payment Response");
             // console.log(payment);
-            res.redirect('http://localhost:3000/account');
+            res.redirect(`${process.env.URL_REACT}/account`);
         }
     });
 }

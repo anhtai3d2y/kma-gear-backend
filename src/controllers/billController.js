@@ -19,6 +19,24 @@ let handleGetAllBills = async (req, res) => {
     })
 }
 
+let handleGetAllBillsByCustomer = async (req, res) => {
+    let id = req.query.id //ALL, ID
+    if (!id) {
+        return res.status(200).json({
+            errCode: 1,
+            errMessage: 'Missing required parameters!',
+            bills: []
+        })
+    }
+    let bills = await billService.getAllBillsByCustomer(id)
+
+    return res.status(200).json({
+        errCode: 0,
+        errMessage: 'Ok',
+        bills
+    })
+}
+
 let handleSearchBills = async (req, res) => {
     let key = req.query.key //ALL, ID
     if (!key) {
@@ -108,6 +126,7 @@ let handleRecoverBill = async (req, res) => {
 
 module.exports = {
     handleGetAllBills: handleGetAllBills,
+    handleGetAllBillsByCustomer: handleGetAllBillsByCustomer,
     handleGetAllBillsDeleted: handleGetAllBillsDeleted,
     handleGetBillByPayid: handleGetBillByPayid,
     handleSearchBills: handleSearchBills,

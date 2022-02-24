@@ -115,6 +115,12 @@ let handleEditUser = async (req, res) => {
     return res.status(200).json(message)
 }
 
+let handleEditUserPassword = async (req, res) => {
+    let data = req.body
+    let message = await userService.updateUserPassword(data)
+    return res.status(200).json(message)
+}
+
 let handleDeleteUser = async (req, res) => {
     if (!req.body.id) {
         return res.status(200).json({
@@ -145,6 +151,7 @@ module.exports = {
     handleSearchUsers: handleSearchUsers,
     handleCreateNewUser: handleCreateNewUser,
     handleEditUser: handleEditUser,
+    handleEditUserPassword: handleEditUserPassword,
     handleDeleteUser: handleDeleteUser,
     handleRecoverUser: handleRecoverUser,
 }

@@ -9,6 +9,7 @@ let getAllInvoicedetails = (invoicedetailId) => {
                     include: [
                         { model: db.Products },
                     ],
+                    order: [['createdAt', 'ASC']],
                     raw: true,
                     nest: true
                 })
@@ -17,6 +18,27 @@ let getAllInvoicedetails = (invoicedetailId) => {
                 invoicedetails = await db.Invoicedetails.findAll({
                     where: { billId: invoicedetailId },
                     raw: true
+                })
+            }
+            resolve(invoicedetails)
+        } catch (error) {
+            reject(error)
+        }
+    })
+}
+
+let getAllInvoicedetailsByBill = (billId) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            let invoicedetails = ''
+            if (billId) {
+                invoicedetails = await db.Invoicedetails.findAll({
+                    where: { BillId: billId },
+                    include: [
+                        { model: db.Products },
+                    ],
+                    raw: true,
+                    nest: true
                 })
             }
             resolve(invoicedetails)
@@ -131,6 +153,7 @@ let deleteInvoicedetail = (invoicedetailId) => {
 
 module.exports = {
     getAllInvoicedetails: getAllInvoicedetails,
+    getAllInvoicedetailsByBill: getAllInvoicedetailsByBill,
     createNewInvoicedetail: createNewInvoicedetail,
     bulkCreateInvoicedetail: bulkCreateInvoicedetail,
     updateInvoicedetailData: updateInvoicedetailData,

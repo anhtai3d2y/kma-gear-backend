@@ -32,6 +32,32 @@ let getAllBills = (billId) => {
     })
 }
 
+let getAllBillsByCustomer = (customerId) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            let bills = ''
+            if (customerId) {
+                bills = await db.Bills.findAll({
+                    include: [
+                        { model: db.States },
+                        { model: db.Users },
+                    ],
+                    where: {
+                        UserId: customerId,
+                        deleted: 0,
+                    },
+                    order: [['createdAt', 'ASC']],
+                    raw: true,
+                    nest: true
+                })
+            }
+            resolve(bills)
+        } catch (error) {
+            reject(error)
+        }
+    })
+}
+
 let getSearchBills = (key) => {
     return new Promise(async (resolve, reject) => {
         try {
@@ -44,7 +70,7 @@ let getSearchBills = (key) => {
                     { model: db.States },
                     { model: db.Users },
                 ],
-                order: [['createdAt', 'DESC']],
+                order: [['createdAt', 'ASC']],
                 where: {
                     deleted: 0,
                     [Op.or]: [
@@ -248,6 +274,7 @@ let recoverBill = (billId) => {
 
 module.exports = {
     getAllBills: getAllBills,
+    getAllBillsByCustomer: getAllBillsByCustomer,
     getAllBillsDeleted: getAllBillsDeleted,
     getBillByPayid: getBillByPayid,
     getSearchBills: getSearchBills,

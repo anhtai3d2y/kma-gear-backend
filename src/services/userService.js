@@ -21,7 +21,6 @@ let handleUserLogin = (email, password) => {
     return new Promise(async (resolve, reject) => {
         try {
             let userData = {}
-            console.log('test ok')
             let isExist = await checkUserEmail(email)
             if (isExist) {
                 //user already exist
@@ -291,6 +290,48 @@ let updateUserData = (data) => {
     })
 }
 
+let updateUserPassword = (data) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            if (!data.id) {
+                resolve({
+                    errCode: 2,
+                    Message: 'Missing required parameters'
+                })
+            }
+            let user = await db.Users.findOne({
+                where: { id: data.id },
+                raw: false
+            })
+            if (user) {
+                let check = await bcrypt.compareSync(data.password, user.password);
+                if (check) {
+                    let hashPasswordFromBcrypt = await hashUserPassword(data.newPassword);
+                    user.password = hashPasswordFromBcrypt
+                    await user.save()
+
+                    resolve({
+                        errCode: 0,
+                        Message: 'Update password successfully!'
+                    })
+                } else {
+                    resolve({
+                        errCode: 1,
+                        errMessage: 'Update password failure, wrong password!'
+                    })
+                }
+            } else {
+                resolve({
+                    errCode: 2,
+                    errMessage: 'Update password failure!'
+                })
+            }
+        } catch (error) {
+            reject(error)
+        }
+    })
+}
+
 let deleteUser = (UserId) => {
     return new Promise(async (resolve, reject) => {
         try {
@@ -363,6 +404,7 @@ module.exports = {
     getAllUsersDeleted: getAllUsersDeleted,
     getSearchUsers: getSearchUsers,
     createNewUser: createNewUser,
+    updateUserPassword: updateUserPassword,
     updateUserData: updateUserData,
     deleteUser: deleteUser,
     recoverUser: recoverUser,

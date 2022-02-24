@@ -6,6 +6,7 @@ let getAllCartdetails = (cartdetailId) => {
             let cartdetails = ''
             if (cartdetailId === 'ALL') {
                 cartdetails = await db.Cartdetails.findAll({
+                    order: [['createdAt', 'ASC']],
                     raw: true
                 })
             }
@@ -15,6 +16,7 @@ let getAllCartdetails = (cartdetailId) => {
                     include: [
                         { model: db.Products },
                     ],
+                    order: [['createdAt', 'ASC']],
                     raw: true,
                     nest: true,
                 })
