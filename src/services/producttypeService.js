@@ -45,7 +45,7 @@ let getSearchProducttypes = (key) => {
                     deleted: 0,
                     [Op.or]: [
                         { id: { [Op.eq]: id, } },
-                        { typeName: { [Op.substring]: key, } },
+                        { typeName: { [Op.iLike]: `%${key}%`, } },
                     ],
                 },
                 raw: true,

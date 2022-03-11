@@ -38,7 +38,7 @@ let getSearchBanners = (key) => {
                     [Op.or]: [
                         { id: { [Op.eq]: id, } },
                         { type: { [Op.eq]: id, } },
-                        { link: { [Op.substring]: key, } },
+                        { link: { [Op.iLike]: `%${key}%`, } },
                     ],
                 },
                 raw: true
@@ -78,7 +78,7 @@ let getAllMainBanners = () => {
     return new Promise(async (resolve, reject) => {
         try {
             let banners = await db.Banners.findAll({
-                where: { type: 0 },
+                where: { type: 0, deleted: 0 },
                 raw: true
             })
             resolve(banners)
@@ -91,7 +91,7 @@ let getAllSubBanners = (bannerId) => {
     return new Promise(async (resolve, reject) => {
         try {
             let banners = await db.Banners.findAll({
-                where: { type: 1 },
+                where: { type: 1, deleted: 0 },
                 raw: true
             })
             resolve(banners)

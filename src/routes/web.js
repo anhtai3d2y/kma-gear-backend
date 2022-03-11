@@ -7,9 +7,9 @@ import stateController from "../controllers/stateController";
 import cartController from "../controllers/cartController";
 import categoryController from "../controllers/categoryController";
 import brandController from "../controllers/brandController";
+import productController from "../controllers/productController";
 import producttypeController from "../controllers/producttypeController";
 import descriptionController from "../controllers/descriptionController";
-import productController from "../controllers/productController";
 import invoicedetailController from "../controllers/invoicedetailController";
 import cartdetailController from "../controllers/cartdetailController";
 import paypalController from "../controllers/paypalController";
@@ -115,6 +115,7 @@ let initWebRoutes = (app) => {
     router.get('/api/get-all-products-deleted', productController.handleGetAllProductsDeleted)
     router.get('/api/get-top-products-home', productController.handleGetTopProductsHome)
     router.get('/api/get-products-by-type', productController.handleGetProductsByType)
+    router.get('/api/get-products-by-brand', productController.handleGetProductsByBrand)
     router.get('/api/search-products', productController.handleSearchProducts)
     router.post('/api/create-new-product', productController.handleCreateNewProduct)
     router.post('/api/bulk-update-amount-product', productController.handleUpdateAmountProduct)

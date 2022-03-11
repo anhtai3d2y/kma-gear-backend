@@ -170,10 +170,10 @@ let getSearchUsers = (key) => {
                     deleted: 0,
                     [Op.or]: [
                         { id: { [Op.eq]: id, } },
-                        { email: { [Op.substring]: key, } },
-                        { fullName: { [Op.substring]: key, } },
-                        { phoneNumber: { [Op.substring]: key, } },
-                        { address: { [Op.substring]: key, } },
+                        { email: { [Op.iLike]: `%${key}%`, } },
+                        { fullName: { [Op.iLike]: `%${key}%`, } },
+                        { phoneNumber: { [Op.iLike]: `%${key}%`, } },
+                        { address: { [Op.iLike]: `%${key}%`, } },
                     ],
                 },
                 raw: true

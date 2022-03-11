@@ -37,7 +37,7 @@ let getSearchBrands = (key) => {
                     deleted: 0,
                     [Op.or]: [
                         { id: { [Op.eq]: id, } },
-                        { name: { [Op.substring]: key, } },
+                        { name: { [Op.iLike]: `%${key}%`, } },
                     ],
                 },
                 raw: true

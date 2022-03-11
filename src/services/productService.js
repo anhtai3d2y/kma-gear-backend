@@ -55,6 +55,27 @@ let getProductsByType = (id) => {
     })
 }
 
+let getProductsByBrand = (id) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            let products = await db.Products.findAll({
+                where: {
+                    deleted: 0,
+                    BrandId: id,
+                },
+                include: [
+                    { model: db.Brands },
+                ],
+                raw: true,
+                nest: true
+            })
+            resolve(products)
+        } catch (error) {
+            reject(error)
+        }
+    })
+}
+
 let getSearchProducts = (key) => {
     return new Promise(async (resolve, reject) => {
         try {
@@ -71,9 +92,9 @@ let getSearchProducts = (key) => {
                     // }
                     [Op.or]: [
                         { id: { [Op.eq]: id, } },
-                        { name: { [Op.substring]: key } },
+                        { name: { [Op.iLike]: `%${key}%` } },
                         { price: { [Op.lte]: id } },
-                        { shortDescMarkdown: { [Op.substring]: key } },
+                        { shortDescMarkdown: { [Op.iLike]: `%${key}%` } },
                     ],
                 },
                 include: [
@@ -122,13 +143,12 @@ let getAllProductsDeleted = (ProductId) => {
     })
 }
 
-let getTopProductsHome = (limit) => {
+let getTopProductsHome = () => {
     return new Promise(async (resolve, reject) => {
         try {
             let products = await db.Products.findAll({
                 where: { deleted: 0 },
-                limit: limit,
-                order: [['createdAt', 'DESC']],
+                order: [['updatedAt', 'DESC']],
                 raw: true
             })
             resolve({
@@ -295,6 +315,7 @@ let recoverProduct = (ProductId) => {
 module.exports = {
     getAllProducts: getAllProducts,
     getProductsByType: getProductsByType,
+    getProductsByBrand: getProductsByBrand,
     getAllProductsDeleted: getAllProductsDeleted,
     getSearchProducts: getSearchProducts,
     createNewProduct: createNewProduct,
