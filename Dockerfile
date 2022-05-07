@@ -1,8 +1,8 @@
-FROM node:14
+FROM node:12.19.0-alpine3.9 AS development
 
-WORKDIR /home/node/app
+WORKDIR /usr/src/app
 
-COPY package.json .
+COPY package*.json ./
 
 RUN npm install
 
@@ -10,4 +10,4 @@ COPY . .
 
 EXPOSE 8080
 
-CMD ["npm", "start:prod"]
+CMD ["npm", "run", "start"]

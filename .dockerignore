@@ -1,0 +1,8 @@
+node_modules
+test
+.eslintrc.js
+.prettierrc
+docker-compose.yml
+Dockerfile
+README.md 
+package-lock.json
